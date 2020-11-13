@@ -1,0 +1,74 @@
+
+document.body.style.backgroundColor = "black";
+let canvas = document.getElementById("myCanvas");
+let ctx = canvas.getContext("2d");
+
+function getTimeS(){
+    var d = new Date();
+    return (d.getTime()/1000)
+}
+
+function drawBG() {
+    // Make the canvas background white
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function norm(val_og_array){
+    var norm_val = 0;
+    for(c = 0; c<val_og_array.length; c++){
+        norm_val += Math.pow(val_og_array[c],2);
+    }
+    norm_val = Math.pow(norm_val,1/2);
+    return norm_val;
+}
+
+function arraySum(og_array1, og_array2){
+
+    // // console.log(og_array1); // console.log(og_array2);
+    if (og_array1.length != og_array2.length){console.log("og_array sum error"); return 0;}
+    var sum = new Array();
+    sum[0]=undefined;
+    sum.length = og_array1.length;
+    for(c = 0; c<og_array1.length; c++){
+        sum[c] = og_array1[c] + og_array2[c];
+    }
+    return sum;
+}
+
+function scaleArray(og_array,scalar){
+    // console.log(og_array,scalar);
+    var newog_array = new Array();
+    newog_array[0] = undefined;
+    newog_array.length = og_array.length;
+    for (c = 0; c<og_array.length; c++){
+        newog_array[c] = og_array[c]*scalar;
+    }
+    return newog_array;
+}
+
+function clamp(num, min, max) {
+  return num <= min ? min : num >= max ? max : num;
+}
+
+function arrayClamp(og_array, min, max) {
+    // // console.log(og_array, min, max);
+    for(c = 0; c < og_array.length; c++){
+        num = og_array[c];
+        og_array[c] = (num <= min ? min : num >= max ? max : num);
+    }
+    return og_array;
+}
+
+function arrayScalarSum(og_array, scalar){
+    var sum = new Array();
+    sum[0] = undefined;
+    sum.length = og_array.length;
+    for(c = 0; c<og_array.length; c++){
+        sum[c] = og_array[c] + scalar;
+    }
+    return sum;
+}
+
+
