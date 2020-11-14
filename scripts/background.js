@@ -61,6 +61,22 @@ function arrayClamp(og_array, min, max) {
     return og_array;
 }
 
+function arrayDot(array1, array2){
+    var dotproduct = 0;
+    for (c = 0; c < array1.length; c++){
+        dotproduct += array1[c]*array2[c];
+    }
+    return dotproduct;
+}
+
+function arrayElementWise(array1,array2){
+    newarray = array1;
+    for(c = 0; c<array1.length;c++){
+        newarray[c] = array1[c]*array2[c];
+    }
+    return newarray;
+}
+
 function arrayScalarSum(og_array, scalar){
     var sum = new Array();
     sum[0] = undefined;
@@ -69,6 +85,24 @@ function arrayScalarSum(og_array, scalar){
         sum[c] = og_array[c] + scalar;
     }
     return sum;
+}
+
+function vectroMatrixProduct(array,mat){
+    var newmat = mat;
+    for (c = 0; c<mat.length;c++){
+        newmat[c] = arrayElementWise(array,mat[c]);
+    }
+    return newmat;
+}
+
+function scaleMatrix(mat, scalar){
+    var newmat = mat;
+    for(c = 0; c < mat.length; c++){
+        for (b = 0; b < mat[c].length; b++){
+            newmat[c][b] = scalar*mat[c][b];
+        }
+    }
+    return newmat
 }
 
 

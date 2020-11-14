@@ -1,16 +1,24 @@
-document.addEventListener("mousemove", mouseMoveHandler, false);
+
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
-var handRadius = 10;
-var handX = canvas.width / 2;
-var handY = canvas.height / 2;
+var testarray = [[3,6,7],[3,4,7]];
+console.log(testarray[1][1])
+
+// var handRadius = 10;
+// var handX = canvas.width / 2;
+// var handY = canvas.height / 2;
 var obstaclecount = 1
 var gameshape = [canvas.height, canvas.width]
 ctime = getTimeS();
 expl = 0.33
 var targets = new Array();
-// var targets = new obstacles(gameshape, ctime, expl)
+
+damping = 0;
+mirror = false;
+var newplayer = new player(gameshape, damping, mirror);
+document.addEventListener("mousemove", mouseMoveHandler, false);
+
 
 
 for(let c=0; c<obstaclecount; c++) {
@@ -22,11 +30,11 @@ for(let c=0; c<obstaclecount; c++) {
 
 function draw() {
     drawBG()    // Make background black and white - from other script
-    drawHand()  // Draw the hand marker
+    drawHand(newplayer)  // Draw the hand marker
     for(let c=0; c<obstaclecount; c++){
         ctime = getTimeS();
         console.log(targets[c].loc)
-        targets[c].updatePosition(ctime, [handX,handY], 10, 1000);
+        targets[c].updatePosition(ctime, [newplayer.loc[0],newplayer.loc[1]], 10, 1000);
         console.log(targets[c].loc)
         if (!targets[c].inframe){
             targets[c] = new obstacles(gameshape, ctime, expl);
@@ -48,9 +56,9 @@ function drawMarker(target){
     ctx.closePath();
 }
 
-function drawHand(){
+function drawHand(player){
     ctx.beginPath();
-    ctx.arc(handX, handY, handRadius, 0, Math.PI*2);
+    ctx.arc(player.loc[0], player.loc[1], player.radius, 0, Math.PI*2);
     ctx.fillStyle =  "red";
     ctx.fill();
     ctx.closePath();
@@ -80,9 +88,13 @@ function mouseMoveHandler(e) {
     var relativeX = e.clientX - canvas.offsetLeft;
     var relativeY = e.clientY - canvas.offsetTop;
     if(relativeX > 0 && relativeX < canvas.width) {
-        handX = relativeX;
-        handY = relativeY;
+        newX = relativeX;
+        newY = relativeY;
     }
+    curr_time = getTimeS();
+    console.log(newX,newY);
+    newplayer.updatePosition([newX,newY], curr_time);
+    console.log(newplayer.loc);
 }
 
 
