@@ -6,7 +6,7 @@ class marker{
         this.max_unobs_time = 0.15;
         this.max_obs_time = 1;
         this.unobs_start = -1;
-        this.marker_color = (0,255,0);
+        this.marker_color = "green"; //(0,255,0);
         this.visible = true;
         this.resetMarker(markertype);
     }

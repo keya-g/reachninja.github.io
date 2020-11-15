@@ -6,10 +6,10 @@ var testarray = [[3,6,7],[3,4,7]];
 console.log(testarray[1][1])
 
 // var handRadius = 10;
-// var handX = canvas.width / 2;
-// var handY = canvas.height / 2;
+// var handX = gameCanvas.width / 2;
+// var handY = gameCanvas.height / 2;
 var obstaclecount = 1
-var gameshape = [canvas.height, canvas.width]
+var gameshape = [gameCanvas.height, gameCanvas.width]
 ctime = getTimeS();
 expl = 0.33
 var targets = new Array();
@@ -85,16 +85,19 @@ function keyUpHandler(e) {
 
 
 function mouseMoveHandler(e) {
-    var relativeX = e.clientX - canvas.offsetLeft;
-    var relativeY = e.clientY - canvas.offsetTop;
-    if(relativeX > 0 && relativeX < canvas.width) {
+    var relativeX = e.clientX - gameCanvas.offsetLeft;
+    var relativeY = e.clientY - gameCanvas.offsetTop;
+    if(relativeX > 0 && relativeX < gameCanvas.width) {
         newX = relativeX;
         newY = relativeY;
     }
+
     curr_time = getTimeS();
     console.log(newX,newY);
     newplayer.updatePosition([newX,newY], curr_time);
     console.log(newplayer.loc);
+    var mouse_loc = [newX, newY];
+    return mouse_loc;
 }
 
 

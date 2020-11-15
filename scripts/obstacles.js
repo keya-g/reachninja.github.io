@@ -10,7 +10,7 @@ class obstacles extends marker{
 
     resetObstacle(curr_time, exploding_perc, vel_max = 1, vel_min = 0.5, acc = 100, theta_max = -30, theta_min = -90, max_obs_time = 1, max_unobs_time = 0.15){
         
-        this.x = Math.ceil(Math.random()*canvas.width); //np.around(np.random.rand(1)*this.shape[1]);
+        this.x = Math.ceil(Math.random()*gameCanvas.width); //np.around(np.random.rand(1)*this.shape[1]);
         this.y = 0;
         this.velocity_scale = 500;
         this.velocity =  clamp(Math.random(), vel_min, vel_max)*this.velocity_scale//np.random.uniform(low = vel_min, high = vel_max, size = 1)*this.velocity_scale; //np.clip(np.random.rand(1),vel_min,vel_max)*this.velocity_scale
@@ -131,11 +131,11 @@ class obstacles extends marker{
             
     setRegularObstacle(){
         this.obstacle_type = 'Regular';
-        this.marker_color = (0,0,255);
+        this.marker_color = "blue" // (0,0,255);
     }
     setExplodingObstacle(){
         this.obstacle_type = 'Exploding';
-        this.marker_color = (0, 0, 0);
+        this.marker_color = "black"; // (0, 0, 0);
     }
 
     

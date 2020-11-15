@@ -1,7 +1,11 @@
 
 document.body.style.backgroundColor = "black";
-let canvas = document.getElementById("myCanvas");
-let ctx = canvas.getContext("2d");
+let gameCanvas = document.getElementById("gameCanvas");
+let ctx = gameCanvas.getContext("2d");
+let scoreCanvas = document.getElementById("scoreCanvas");
+let sc_ctx = scoreCanvas.getContext("2d");
+let timeCanvas = document.getElementById("timeCanvas");
+let tm_ctx = timeCanvas.getContext("2d");
 
 function getTimeS(){
     var d = new Date();
@@ -9,10 +13,10 @@ function getTimeS(){
 }
 
 function drawBG() {
-    // Make the canvas background white
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Make the gameCanvas background white
+    ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
     ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
 }
 
 function norm(val_og_array){

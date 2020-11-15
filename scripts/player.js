@@ -13,7 +13,7 @@ class player extends marker{
         this.perc_obs = 0; //np.clip(np.random.rand(),0.5,1)  
         this.obstacle_count = 0;
         this.exploding_perc = 0.3;
-        this.marker_color = (255,0,0);
+        this.marker_color = "red"; // (255,0,0);
         this.vel = [0,0];
         this.acc = [0, 0];
         // this.old_loc_wt; // originally 0.3 TO CHANGE // 0.5 for damped
