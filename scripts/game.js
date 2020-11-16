@@ -56,11 +56,11 @@ class game{
 
     initializeGameType(exploding_perc = 0.33, max_unobs_time = 0.2, max_obs_time = 0.8, 
                                 vel_max = 1, vel_min = 0.5, acc = 100, theta_max = -30, theta_min = -90,
-                                min_obstacles = 1, max_obstacles = 4, damping = 0, mirror = false, magnetic_coef = 0){
+                                min_obstacles = 1, max_obstacles = 4, damping = 0, mirror = false, magnetic_coef = 5000 ){
         this.exploding_perc = exploding_perc;
         this.max_unobs_time = max_unobs_time;
         this.max_obs_time = max_obs_time;
-        this.acceleration = np.array([0,acc]);
+        this.acceleration = [0,acc];
         this.velocity_min = vel_min;
         this.velocity_max = vel_max;
         this.theta_max = theta_max;
@@ -73,7 +73,7 @@ class game{
         // this.damping_mat = this.damping*np.array(((-1, -1),(-1, 1)))
         this.mirror = mirror;
         this.magnetic_coef = magnetic_coef;
-        if vel_max == vel_min && vel_max == 0{
+        if (vel_max == vel_min && vel_max == 0){
             this.stationary = true;
         }
     }
@@ -81,7 +81,7 @@ class game{
 
     initializeGameFrame(){
         // Function to initialilze the game screen size - background etc.
-        function drawBG()
+        drawBG()
         console.log("Screen size is: width=", gameCanvas.width," height=", gameCanvas.height);
 
 
@@ -137,11 +137,11 @@ class game{
                             "_" + d.getHours() + "-" + d.getMinutes() + "-" + d.getSeconds();// datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S");
     }
 
-    run(){
+    startrun(){
         var game_group = 2;
         var current_game_type = "Control";
 
-        if game_group == 3{     // 3 is curriculum; 2 is control
+        if (game_group == 3){     // 3 is curriculum; 2 is control
             current_game_type = "Curriculum";
         }
 
@@ -149,69 +149,86 @@ class game{
         // clock = pygame.time.Clock()
         
         this.crashed = false;
-        this.game_mode = null;
+        this.game_mode = 'StartPlay';  // null;
         // key = cv2.waitKey(1)
         // key = key & 0xFF
 
         var player_id = 3;
-        this.player = Player(gameshape = (this.original_frame_tuple[1], this.original_frame_tuple[0]), damping = this.damping, mirror = this.mirror, id = player_id);
-        this.init_line = f"Screen: {this.screen_size_tuple}; Original: {this.original_frame_tuple}; Modified: {this.frame_size_tuple}";
+        gameshape = [gameCanvas.width, gameCanvas.height];
+        this.player = new player(gameshape, this.damping, this.mirror, player_id);
+        // this.init_line = f"Screen: {this.screen_size_tuple}; Original: {this.original_frame_tuple}; Modified: {this.frame_size_tuple}";
         // this.gamelog = Gamelog(this.player, this.game_id)
+        
+    }
+        // console.log(t_old);
+        // for (var t = 0; t < this.play_time;){
+        //     t = getTimeS() - start_time;
+        //     if (Math.ceil(t) != Math.ceil(t_old)){
+        //         console.log(Math.ceil(t_old));
+        //     }
+        //     t_old = t;
 
-        while (!this.crashed){
-            // for event in pygame.event.get():
-            //     if event.type == pygame.QUIT:
-            //         this.crashed = true
-            //     else if event.type == pygame.KEYDOWN && event.key == pygame.K_q:
-            //         this.crashed = true
-                // else if event.type == pygame.KEYDOWN && event.key == pygame.K_s:
-                //     this.game_mode = 'StartPlay'
-                // else if event.type == pygame.KEYDOWN && event.key == pygame.K_c:
-                //     this.game_mode = 'Calibrate'
-                //     this.current_time = time.time()  
-                // else if event.type == pygame.KEYDOWN && event.key == pygame.K_t:
-                //     this.game_mode = 'Test'
-                // else if event.type == pygame.KEYDOWN && event.key == pygame.K_e:
-                //     this.game_mode = null
-                //     this.player.start_time = -1
-                //     // this.player.attempt -= 1 // TO CHANGE
-                //     console.log('Exiting... ')
+        //     // for event in pygame.event.get():
+        //     //     if event.type == pygame.QUIT:
+        //     //         this.crashed = true
+        //     //     else if event.type == pygame.KEYDOWN && event.key == pygame.K_q:
+        //     //         this.crashed = true
+        //         // else if event.type == pygame.KEYDOWN && event.key == pygame.K_s:
+        //         //     this.game_mode = 'StartPlay'
+        //         // else if event.type == pygame.KEYDOWN && event.key == pygame.K_c:
+        //         //     this.game_mode = 'Calibrate'
+        //         //     this.current_time = getTimeS()  
+        //         // else if event.type == pygame.KEYDOWN && event.key == pygame.K_t:
+        //         //     this.game_mode = 'Test'
+        //         // else if event.type == pygame.KEYDOWN && event.key == pygame.K_e:
+        //         //     this.game_mode = null
+        //         //     this.player.start_time = -1
+        //         //     // this.player.attempt -= 1 // TO CHANGE
+        //         //     console.log('Exiting... ')
 
-                // else if event.type == pygame.MOUSEBUTTONDOWN:
-                //     if this.start_button.collidepoint(event.pos):
-                //         this.game_mode = 'StartPlay'
-                //     else if this.calibrate_button.collidepoint(event.pos):
-                //         this.game_mode = 'Calibrate'
-                //         this.current_time = time.time()  
-                //     else if this.test_button.collidepoint(event.pos):
-                //         this.game_mode = 'Test'
-                //     else:
-                //         this.pickColor()
+        //         // else if event.type == pygame.MOUSEBUTTONDOWN:
+        //         //     if this.start_button.collidepoint(event.pos):
+        //         //         this.game_mode = 'StartPlay'
+        //         //     else if this.calibrate_button.collidepoint(event.pos):
+        //         //         this.game_mode = 'Calibrate'
+        //         //         this.current_time = getTimeS()  
+        //         //     else if this.test_button.collidepoint(event.pos):
+        //         //         this.game_mode = 'Test'
+        //         //     else:
+        //         //         this.pickColor()
                 
-            if (this.game_mode == null){
-                this.displayDefault();
-            }
+        //     // if (this.game_mode == null){
+        //     //     this.displayDefault();
+        //     // }
 
-            else if (this.game_mode == 'StartPlay' && this.player.start_time == -1){
-                
+        //     // else if (this.game_mode == 'StartPlay' && this.player.start_time == -1){
+        /////////////////////////
+        run(){
+            var current_game_type = "Control";
+            // console.log(this.game_mode);
+
+            if (this.game_mode == 'StartPlay' && this.player.start_time == -1){
                 // Check for more than 40 attenpts
                 if (this.player.attempt >= 40){
                     console.log('Quitting... ');
                     this.crashed = true;
                 }
                 else{
-                    console.log(f'Starting... ')
+                    console.log('Starting... ');
+                    // alert('starting');
+                    this.player.setStartTime();
                     this.game_type = current_game_type;
                     this.frame_id = 1;
-                    this.waitGame(time.time());
+        //             // this.waitGame(getTimeS());
                     this.check_targets = false;
+                    console.log('Here');
                     this.initializeNewGame();
-                    // this.gamelog.newGameLog(this.player.attempt, this.init_line);
+        //             // this.gamelog.newGameLog(this.player.attempt, this.init_line);
                 }
             }
 
-            else if (this.game_mode == 'InPlay' && (time.time() - this.player.start_time) <= this.play_time){
-                this.current_time = time.time();
+            else if (this.game_mode == 'InPlay' && (getTimeS() - this.player.start_time) <= this.play_time){
+                this.current_time = getTimeS();
                 this.saveframe = false;//InPlay      // NEED TO CHANGE THIS BACK TO TRUE TO SAVE IMAGES
                 this.updateGameFrame();
                 // this.updateGamelog();
@@ -221,29 +238,30 @@ class game{
                 this.game_mode = null;
                 this.saveframe = false;
                 // pygame.time.delay(2000);
-                setTimeout(() => {
-                  console.log("Waited 2000 ms");
-                }, 2000);
+                // setTimeout(() => {
+                //   console.log("Waited 2000 ms");
+                // }, 2000);
                 this.player.setStartTime();
+                this.crashed = true;
             }
 
-            else if (this.game_mode == 'Calibrate'){
-                console.log('Calibrating...')
-                this.frame_id = 1;
-                this.saveframe = false;
-                // this.gamelog.savefolder = this.gamelog.calibration_log_folder
-                this.calibrateGame();
-                this.game_mode = null;
-            }
+        //     else if (this.game_mode == 'Calibrate'){
+        //         console.log('Calibrating...')
+        //         this.frame_id = 1;
+        //         this.saveframe = false;
+        //         // this.gamelog.savefolder = this.gamelog.calibration_log_folder
+        //         this.calibrateGame();
+        //         this.game_mode = null;
+        //     }
 
-            else if (this.game_mode == 'Test'){
-                console.log('Testing...');
-                this.frame_it = 1;
-                this.test_duration = 10; //s
-                this.testGame();
-                this.game_mode = null;
-            }
-
+        //     else if (this.game_mode == 'Test'){
+        //         console.log('Testing...');
+        //         this.frame_it = 1;
+        //         this.test_duration = 10; //s
+        //         this.testGame();
+        //         this.game_mode = null;
+        //     }
+        // }
 
             // pygame.display.update()
             // clock.tick(60)
@@ -251,7 +269,13 @@ class game{
         // this.video_capture.release()
         // cv2.destroyAllWindows()
         // pygame.quit()
-        alert("Quitting game!");
+        if (this.crashed == true){
+            if (confirm("Game ended! Restart?")){
+                this.game_mode = 'StartPlay';
+                this.player.start_time = -1;
+                this.crashed = false;
+            }
+        }
     }
 
 
@@ -270,7 +294,8 @@ class game{
     updateGameFrame(){
         // ret, frame = this.video_capture.read()
         // frame = cv2.flip(frame, 1)
-        this.stepGame(frame);
+        // console.log("In game frame");
+        this.stepGame();
         // this.game_display.fill([255,255,255]);
         // pygame.draw.rect(this.game_display, (0,0,0), (0,0,this.frame_offset, this.frame_size_tuple[1]))
         // pygame.draw.rect(this.game_display, (0,0,0), (this.frame_offset + this.frame_size_tuple[0],0,this.frame_offset, this.frame_size_tuple[1]))
@@ -279,33 +304,47 @@ class game{
 
         // playerloc = (int(this.player.loc[0]/this.width_ratio) + this.frame_offset, int(this.player.loc[1]/this.height_ratio))
         // console.log(f"player.loc {this.player.loc}, height ratio {this.height_ratio}, new updategameframe {playerloc}")
-        // if this.player.checkObservable(time.time()):
+        // if this.player.checkObservable(getTimeS()):
         //     pygame.draw.circle(this.game_display, this.player.marker_color, playerloc, int(this.scaling_factor*this.player.radius))
-
+        // 
+        drawBG();
+        // console.log(this.player.checkObservable(getTimeS()));
         if (this.player.checkObservable(getTimeS())) {
             this.drawCircle(this.player);
         }            
 
-        for (c = 0; c<this.curr_obstacle.length; c++){ //o in this.curr_obstacle:
+        for (var c = 0; c<this.curr_obstacle.length; c++){ //o in this.curr_obstacle:
             // obstacleloc = (int(o.loc[0]/this.width_ratio) + this.frame_offset, int(o.loc[1]/this.height_ratio))
+            // console.log(this.curr_obstacle[c].loc);
             this.drawCircle(this.curr_obstacle[c]);
             // pygame.draw.circle(this.game_display, o.marker_color, obstacleloc, int(this.scaling_factor*o.radius))
         }
         
-        score_line = "Score:\n" + this.player.score;
-        this.writeOnCanvas(scoreCanvas, score_line, [scoreCanvas.width/2, scoreCanvas.height/2], "gray");
+        
+        clearCanvas(scoreCanvas);
+        var score_line = "Score:";
+        this.writeOnCanvas(scoreCanvas, score_line, [scoreCanvas.width/2-75, scoreCanvas.height/2-50], "gray", "50px");
+        score_line = this.player.score;
+        this.writeOnCanvas(scoreCanvas, score_line, [scoreCanvas.width/2-20, scoreCanvas.height/2+50], "gray", "50px");
 
-        time_line = "Time:\n" + Math.ceil(this.play_time - (this.curr_time - this.player.start_time));
-        this.writeOnCanvas(timeCanvas, time_line, [timeCanvas.width/2, timeCanvas.height/2], "gray");
+        
+        clearCanvas(timeCanvas);
+        var time_line = "Time:";
+        this.writeOnCanvas(timeCanvas, time_line, [timeCanvas.width/2-75, timeCanvas.height/2-50], "gray", "50px");
+        time_line = Math.ceil(this.play_time - (this.curr_time - this.player.start_time));
+        this.writeOnCanvas(timeCanvas, time_line, [timeCanvas.width/2-20, timeCanvas.height/2+50], "gray", "50px");
 
-        var disp_frames = 10;
+        var disp_frames = 50;
+
+        
         if (this.display_score > 0 && this.display_score <= disp_frames){
             var score_change = this.player.score - this.old_score;
+            // console.log(score_change);
             var dispmsg = Math.ceil(score_change);
             if (score_change < 0){
-                dispmsg = Math.ceil(score_change)*-1;
+                dispmsg = Math.ceil(score_change);
             }
-            this.writeOnCanvas(gameCanvas,dispmsg, playerloc, "black", "20px");
+            this.writeOnCanvas(gameCanvas,dispmsg, this.player.loc, "black", "20px");
             this.display_score += 1;
             if (this.display_score == disp_frames){
                 this.old_score = this.player.score;
@@ -315,14 +354,14 @@ class game{
         // pygame.display.update()
     }
 
-    function writeOnCanvas(curr_canvas, display_text, text_loc, textcolor, textsize = "50px"){
+    writeOnCanvas(curr_canvas, display_text, text_loc, textcolor, textsize = "20px"){
         var ctx = curr_canvas.getContext("2d");
         ctx.font = textsize +" Arial";
         ctx.fillStyle = textcolor;
         ctx.fillText(display_text, text_loc[0], text_loc[1]);
     }
 
-    function drawHand(marker){
+    drawHand(marker){
         ctx.beginPath();
         ctx.arc(marker.loc[0], marker.loc[1], marker.radius, 0, Math.PI*2);
         ctx.fillStyle =  marker.marker_color;
@@ -332,7 +371,7 @@ class game{
 
     stepGame(){
         this.curr_time = getTimeS();
-
+        // console.log(this.curr_time);
         // frame, center, blob_area = this.blobDetect(rawframe)
         // console.log(f'stepGame center {center}')
         // if blob_area >= this.blob_area:
@@ -351,6 +390,20 @@ class game{
         // console.log(f'Stepgame new_loc {new_loc}')
         // this.player.updatePosition(new_loc, this.curr_time)
         // console.log(f'this.player.loc in stepGame after update {this.player.loc}')
+        // console.log('Here in Stepgame')
+        // drawBG()    // Make background black and white - from other script
+        // drawHand(newplayer)  // Draw the hand marker
+        // for(let c=0; c<obstaclecount; c++){
+        //     ctime = getTimeS();
+        //     console.log(targets[c].loc)
+        //     targets[c].updatePosition(ctime, [newplayer.loc[0],newplayer.loc[1]], 10, 1000);
+        //     console.log(targets[c].loc)
+        //     if (!targets[c].inframe){
+        //         targets[c] = new obstacles(gameshape, ctime, expl);
+        //     }
+
+        //     drawMarker(targets[c])
+        // }
 
         var new_obstacle = new Array();
         var resetobstacle_count = false;
@@ -358,13 +411,23 @@ class game{
         if (this.frame_id == 1){
             this.player.obs_start = getTimeS();
         }
-
+        this.frame_id ++;
         var new_marker_no = 0;
-        for (c = 0; c < this.curr_obstacle.length; c++) {//o in this.curr_obstacle:
-            var o = this.curr_obstacle[c];
-            o.updatePosition(this.curr_time, this.player.loc, this.player.radius, this.magnetic_coef);
+
+        // console.log(this.curr_obstacle.length)
+        for (var ob_ctr = 0; ob_ctr < this.curr_obstacle.length; ob_ctr++) {//o in this.curr_obstacle:
+            // console.log(this.curr_obstacle[ob_ctr].loc);
+
+            // console.log(ob_ctr);
+
+            this.curr_obstacle[ob_ctr].updatePosition(this.curr_time, this.player.loc, this.player.radius, this.magnetic_coef);
+            // console.log(this.curr_obstacle[ob_ctr].loc)
+            var o = this.curr_obstacle[ob_ctr];
+
+            // console.log(o.inframe);
+
             //Check for collision of player && marker - is this happens, score change && reset obstacle count
-            if (o.checkCollision(this.player, this.scaling_factor/2)){
+            if (o.checkCollision(this.player, 1)){ //  this.scaling_factor/2)){
                 var addscore = this.updateScore(o);
                 
                 // if o.obstacle_type == 'Exploding':
@@ -395,19 +458,20 @@ class game{
             // Check if the marker is Regular, if it is, check_targets is set to true indicating at least one of the markers in the new obstacle set is regular
             else if (o.obstacle_type == 'Regular'){
                 this.check_targets = true;
-                new_obstacle.append(o);
+                new_obstacle.push(o);
             }
 
             // This case will only be entered when the marker is 'Exploding' && still in frame / not collided with player
             else{
-                new_obstacle.append(o)
+                new_obstacle.push(o)
             }
-
+        }
         // if this.stationary && not this.check_targets:
         //     // console.log('Here')
         //     resetobstacle_count = true //this.obstacle_count += 1
             // new_marker_no = o.new_marker_no
 
+        // console.log(new_obstacle);
         this.curr_obstacle = new_obstacle; // Effectively removed collided || out of frame markers
 
         if (resetobstacle_count){
@@ -416,15 +480,21 @@ class game{
             // Otherwise, the new count will be new_marker_no - from seeds
             this.newobstacle_count(new_marker_no, this.curr_obstacle);
         }
-
+        // console.log('Here before while');
         // this.check_targets has not been updates so it will still be false if null of the obstacles still on screen are 'Regular'
         while (this.curr_obstacle.length < this.obstacle_count){
             this.cur_obstacle_id += 1;
-            this.curr_obstacle.append(Obstacle((this.original_frame_tuple[1], this.original_frame_tuple[0]), \
-                                                        this.current_time, this.exploding_perc, \
-                                                        this.velocity_max, this.velocity_min, \
-                                                        this.acceleration, this.theta_max, this.theta_min,\
-                                                        this.max_obs_time, this.max_unobs_time, cur_id = this.cur_obstacle_id));
+            ctime = getTimeS();
+            var new_obstacle = new obstacles(gameshape, ctime, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id);
+            this.curr_obstacle.push(new_obstacle);
+            // console.log('new obstacle ' + new_obstacle.loc);
+            // this.cur_obstacle_id += 1;
+            // new_obstacle = new obstacles([gameCanvas.width,gameCanvas.height], +
+            //                                             this.current_time, this.exploding_perc, +
+            //                                             this.velocity_max, this.velocity_min, +
+            //                                             this.acceleration[1], this.theta_max, this.theta_min,+
+            //                                             this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id);
+            // this.curr_obstacle.push(new_obstacle);
 
             //// The following commented code is required for older curriculums where obstacle properties were being changed.
             // if this.player.attempt in [1,2,3,38,39,40] && this.game_type in ['Curriculum', 'Regular']:
@@ -442,18 +512,18 @@ class game{
                 // this.curr_obstacle[-1].setObstacleParams(**this.game_obstacles[str(this.seeds_used)])
                 // this.seeds_used += 1
 
-            if (this.curr_obstacle[-1].obstacle_type == 'Regular'){
-                this.check_targets = true   // Checking if the newly added marker is regular - note that if this was previously false a new marker will necessarily be created
+            if (this.curr_obstacle[this.curr_obstacle.length-1].obstacle_type == 'Regular'){
+                this.check_targets = true;   // Checking if the newly added marker is regular - note that if this was previously false a new marker will necessarily be created
             }
-
+        }
             // if len(this.curr_obstacle) == this.obstacle_count && this.check_targets == false:
             //     this.curr_obstacle[-1].setRegularObstacle()
 
         // if this.stationary && not this.check_targets:
-        if not this.check_targets{
+        if (!this.check_targets){
         // If after all this null of the new markers is 'Regular', the most recently created marker will become 'Regular' forcibly
         // Note that this will always be a newly created marker in the above while loop
-            this.curr_obstacle[-1].setRegularObstacle()
+            this.curr_obstacle[this.curr_obstacle.length-1].setRegularObstacle()
         }
     }
 
@@ -479,9 +549,10 @@ class game{
     //     // console.log(f'Bloc detect center {center}')
     //     return frame, center, blob_area
 
-    // resetBounds(this,lower = [170, 180,70], upper = [180, 255,255]):
-    //     this.lower = np.array(lower, dtype = "uint8")
-    //     this.upper = np.array(upper, dtype = "uint8")
+    resetBounds(lower = [170, 180,70], upper = [180, 255,255]){
+        this.lower = lower;// np.array(lower, dtype = "uint8");
+        this.upper = upper;// np.array(upper, dtype = "uint8");
+    }
 
     // pickColor():
     //     ret, frame = this.video_capture.read()
@@ -504,18 +575,23 @@ class game{
     //     this.blob_area = blob_area*0.1
 
     waitGame(call_time){
-        while ((getTimeS() - call_time) < this.wait_time):
+        console.log("in wait time");
+        alert('here');
+        while ((getTimeS() - call_time) < 1 ){ //this.wait_time){
             // this.game_display.fill([255,255,255])
-            var text_center = [gameCanvas.width/2, gameCavas.height/2 - 50]; //((this.frame_size_tuple[0]/2) + this.frame_offset,(this.frame_size_tuple[1]/2 - 50))
+            drawBG();
+            console.log(Math.ceil(getTimeS() - call_time));
+            var text_center = [gameCanvas.width/2, gameCanvas.height/2 - 50]; //((this.frame_size_tuple[0]/2) + this.frame_offset,(this.frame_size_tuple[1]/2 - 50))
             // this.messageDisplay(f"Attempt {this.player.attempt+1}", text_center, this.textcolor["black"])
-            msg = "Attempt" + (this.player.attempt+1);
+            var msg = "Attempt" + (this.player.attempt+1);
             this.writeOnCanvas(gameCanvas, msg, text_center, "black");
-            text_center = [gameCanvas.width/2, gameCavas.height/2 + 50]; 
+            text_center = [gameCanvas.width/2, gameCanvas.height/2 + 50]; 
             msg = this.wait_time - (getTimeS() - call_time);
             this.writeOnCanvas(gameCanvas, msg, text_center, "black");
             // var text_center = ((this.frame_size_tuple[0]/2) + this.frame_offset,(this.frame_size_tuple[1]/2)+50);
-            // this.messageDisplay(f"{int(this.wait_time - (time.time() - call_time))}", text_center, this.textcolor["black"])
+            // this.messageDisplay(f"{int(this.wait_time - (getTimeS() - call_time))}", text_center, this.textcolor["black"])
             // pygame.display.update()
+        }
     }
 
     // textObjects(text, font, color){
@@ -551,7 +627,7 @@ class game{
             // if len(curr_obstacle) + 1 < new_marker_no + 1: //this.max_obstacles+1:
             //     this.obstacle_count = new_marker_no //this.rs.randint(len(curr_obstacle)+1,this.max_obstacles+1) //np.random.randint(len(curr_obstacle)+1,this.max_obstacles+1) 
             // else:
-            this.obstacle_count = max(len(curr_obstacle) + 1, new_marker_no + 1); //this.max_obstacles + 1)
+            this.obstacle_count = Math.max((curr_obstacle.length) + 1, new_marker_no + 1); //this.max_obstacles + 1)
             // console.log(f'New obstacle count {this.obstacle_count}')
         }
         else{
@@ -568,140 +644,161 @@ class game{
             var size_effect = (marker.max_radius - marker.radius) / (marker.max_radius - marker.min_radius);
             var velocity_effect = (marker.original_velocity/marker.velocity_scale)/(this.velocity_max);
             // console.log(f'size {size_effect}, velocity {velocity_effect}')
-            addscore = 10 + int(10*size_effect) + int(10*velocity_effect);
+            addscore = 10 + Math.ceil(10*size_effect) + Math.ceil(10*velocity_effect);
         }
         this.player.score = this.player.score + addscore;
         return addscore;
     }
 
     initializeNewGame(){
-        this.gamelog.game_type = this.game_type;
+        // this.gamelog.game_type = this.game_type;
+        drawBG()
         this.game_mode = 'InPlay';
         this.display_score = 0;
         this.old_score = 0;
         this.current_time = getTimeS();
         this.player.newGameInit(this.current_time);
         
-        console.log(f'Attempt {this.player.attempt}');
-        this.player.resetObsTime(1,0);
+        console.log('Attempt' + this.player.attempt);
+        // this.player.resetObsTime(1,0);
 
-        // if this.player.attempt in [1,38]:
-        //     this.rs = np.random.RandomState(38)
-        // else if this.player.attempt in [2,39]:
-        //     this.rs = np.random.RandomState(39)
-        // else if this.player.attempt in [3,40]:
-        //     this.rs = np.random.RandomState(40)
-        // else:
-        //     this.rs = np.random.RandomState(null)
+        this.initializeGameType();
+        this.player.resetObsTime(1,1);
+        console.log('player start' + this.player.start_time);
 
-        if (this.game_type == 'Curriculum' && this.player.attempt <= 40){
-            this.initializeGameType(**this.game_params[str(this.player.attempt)])
-            this.player.resetObsTime(this.game_params[str(this.player.attempt)]['max_obs_time'],
-                                        this.game_params[str(this.player.attempt)]['max_unobs_time'])
-        }
-            // console.log('Curriculum')
-        else if (this.game_type == 'Control'){
-            this.initializeGameType(**this.game_params[str(1)])
-            this.player.resetObsTime(1,1)
-        }
-            // console.log('Regular')        
-        // else if this.game_type == 'PositiveDamped':
-        //     this.initializeGameType()
-        //     this.resetDamping(damping = 10)
-        //     // this.player.setObservable()
-        //     // console.log('PositiveDamped')
+        // // if this.player.attempt in [1,38]:
+        // //     this.rs = np.random.RandomState(38)
+        // // else if this.player.attempt in [2,39]:
+        // //     this.rs = np.random.RandomState(39)
+        // // else if this.player.attempt in [3,40]:
+        // //     this.rs = np.random.RandomState(40)
+        // // else:
+        // //     this.rs = np.random.RandomState(null)
+
+        // if (this.game_type == 'Curriculum' && this.player.attempt <= 40){
+        //     this.initializeGameType();
+        //     this.player.resetObsTime(1,1);
+        //     // this.initializeGameType(**this.game_params[str(this.player.attempt)]);
+        //     // this.player.resetObsTime(this.game_params[str(this.player.attempt)]['max_obs_time'],
+        //     //                             this.game_params[str(this.player.attempt)]['max_unobs_time']);
+        // }
+        //     // console.log('Curriculum')
+        // else if (this.game_type == 'Control'){
+        //     this.initializeGameType();
+        //     this.player.resetObsTime(1,1);
+        // }
+        //     // console.log('Regular')        
+        // // else if this.game_type == 'PositiveDamped':
+        // //     this.initializeGameType()
+        // //     this.resetDamping(damping = 10)
+        // //     // this.player.setObservable()
+        // //     // console.log('PositiveDamped')
         
-        // else if this.game_type == 'NegativeDamped':
-        //     this.initializeGameType()
-        //     this.resetDamping(damping = -10)
-        //     // this.player.setObservable()
-        //     // console.log('NegativeDamped')
+        // // else if this.game_type == 'NegativeDamped':
+        // //     this.initializeGameType()
+        // //     this.resetDamping(damping = -10)
+        // //     // this.player.setObservable()
+        // //     // console.log('NegativeDamped')
         
-        // else if this.game_type == 'MaxUnobservable':
-        //     this.initializeGameType()
-        //     this.player.resetObsTime(1,1) // this.player.resetObsTime(0.75,1)
-        //     // console.log('MaxUnobservable')
+        // // else if this.game_type == 'MaxUnobservable':
+        // //     this.initializeGameType()
+        // //     this.player.resetObsTime(1,1) // this.player.resetObsTime(0.75,1)
+        // //     // console.log('MaxUnobservable')
         
-        // else if this.game_type == 'Mirror':
-        //     this.mirror = true
-        //     this.player.mirror = true
-        //     // console.log('Mirror')
+        // // else if this.game_type == 'Mirror':
+        // //     this.mirror = true
+        // //     this.player.mirror = true
+        // //     // console.log('Mirror')
         
-        // else if this.game_type == 'Rotated':
-        //     ang = 45
-        //     this.resetRotationAngle(ang)
-        //     // console.log(f'Rotated {ang} degrees')
+        // // else if this.game_type == 'Rotated':
+        // //     ang = 45
+        // //     this.resetRotationAngle(ang)
+        // //     // console.log(f'Rotated {ang} degrees')
         
-        // else if this.game_type == 'SingleTarget':
-        //     this.initializeGameType(exploding_perc = 1, min_obstacles = 3)
-        //     // console.log('SingleTarget')
+        // // else if this.game_type == 'SingleTarget':
+        // //     this.initializeGameType(exploding_perc = 1, min_obstacles = 3)
+        // //     // console.log('SingleTarget')
         
-        // else if this.game_type == 'MagneticField':
-        //     // magnetic_coef = 5
-        //     this.initializeGameType(magnetic_coef = 5000)
-        //     // console.log('MagneticField')
+        // // else if this.game_type == 'MagneticField':
+        // //     // magnetic_coef = 5
+        // //     this.initializeGameType(magnetic_coef = 5000)
+        // //     // console.log('MagneticField')
         
-        // else if this.game_type == 'MagneticUnobservable':
-        //     this.initializeGameType(magnetic_coef = 5000)
-        //     this.player.resetObsTime(1,1)
+        // // else if this.game_type == 'MagneticUnobservable':
+        // //     this.initializeGameType(magnetic_coef = 5000)
+        // //     this.player.resetObsTime(1,1)
                     
-        // else if this.game_type == 'UnobservableDamped':
-        //     this.initializeGameType()
-        //     this.player.resetObsTime(1,1)
-        //     this.resetDamping(damping = -10)
+        // // else if this.game_type == 'UnobservableDamped':
+        // //     this.initializeGameType()
+        // //     this.player.resetObsTime(1,1)
+        // //     this.resetDamping(damping = -10)
 
-        // else if this.game_type == 'DampedMagnetic':
-        //     this.initializeGameType(magnetic_coef = 5000)
-        //     this.resetDamping(damping = -10)
+        // // else if this.game_type == 'DampedMagnetic':
+        // //     this.initializeGameType(magnetic_coef = 5000)
+        // //     this.resetDamping(damping = -10)
         
-        // else if this.game_type == 'MagneticDampedUnobservable':
-        //     this.initializeGameType(magnetic_coef = 5000)
-        //     this.resetDamping(damping = -10)
-        //     this.player.resetObsTime(1,1)
-        else:
-            console.log('How did you get here?')
-            this.crashed = true
+        // // else if this.game_type == 'MagneticDampedUnobservable':
+        // //     this.initializeGameType(magnetic_coef = 5000)
+        // //     this.resetDamping(damping = -10)
+        // //     this.player.resetObsTime(1,1)
+        // else{
+        //     console.log('How did you get here?')
+        //     this.crashed = true
+        // }
+        // // console.log(this.game_type)
 
-        // console.log(this.game_type)
-
-        // this.player.exploding_perc = 0.9
-        // console.log('Exploding percentage forced to 0.9 - Remove')
+        // // this.player.exploding_perc = 0.9
+        // // console.log('Exploding percentage forced to 0.9 - Remove')
 
         this.newobstacle_count();
-        this.curr_obstacle = [];
-        this.seeds_used = 0;
+        // this.curr_obstacle = [];
+        // this.seeds_used = 0;
         this.cur_obstacle_id = 0;
         this.check_targets = false;
-        while (this.curr_obstacle.length < this.obstacle_count){
+        // console.log('Before while');
+        this.curr_obstacle =  new Array();
+        // console.log( this.obstacle_count);
+        // console.log(this.curr_obstacle);
+
+        for (var ob_ctr = 0; ob_ctr < this.obstacle_count; ob_ctr ++){
             this.cur_obstacle_id += 1;
-            this.curr_obstacle.append(Obstacle((this.original_frame_tuple[1], this.original_frame_tuple[0]), \
-                                                this.current_time, this.exploding_perc, \
-                                                this.velocity_max, this.velocity_min, \
-                                                this.acceleration, this.theta_max, this.theta_min,\
-                                                this.max_obs_time, this.max_unobs_time, cur_id = this.cur_obstacle_id));
+            var new_obstacle = new obstacles(gameshape, this.current_time, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id);
+            this.curr_obstacle.push(new_obstacle);
+            // console.log(this.curr_obstacle[ob_ctr].loc);
+            // console.log(this.cur_obstacle_id);
+            // console.log(ob_ctr);
+        }
+        // setTimeout(function(){ }, 3000);
+        // console.log(this.curr_obstacle);        //     //// The following commented code is required for older curriculums where obstacle properties were being changed.
+        //     // // if this.game_type == 'Control' || (this.game_type == 'Curriculum' && this.player.attempt in [1,2,3,34,35,36,37,38,39,40]):
+        //     // if not (this.game_type == 'Curriculum' && this.player.attempt in range(4,34)):
+        //     //     this.game_obstacles = json.load(open(resource_path(f'JsonFiles/GameSeeds_{this.player.attempt}.json'),'r'))
+        //     //     this.curr_obstacle[-1].setObstacleParams(**this.game_obstacles[str(this.seeds_used)])
+        //     //     this.seeds_used += 1
+        //     // // console.log(f'Here for attempt {this.player.attempt}')
 
-            //// The following commented code is required for older curriculums where obstacle properties were being changed.
-            // // if this.game_type == 'Control' || (this.game_type == 'Curriculum' && this.player.attempt in [1,2,3,34,35,36,37,38,39,40]):
-            // if not (this.game_type == 'Curriculum' && this.player.attempt in range(4,34)):
-            //     this.game_obstacles = json.load(open(resource_path(f'JsonFiles/GameSeeds_{this.player.attempt}.json'),'r'))
-            //     this.curr_obstacle[-1].setObstacleParams(**this.game_obstacles[str(this.seeds_used)])
-            //     this.seeds_used += 1
-            // // console.log(f'Here for attempt {this.player.attempt}')
+        //     // this.game_obstacles = json.load(open(resource_path(f'JsonFiles/Player_3/GameSeeds_{this.player.attempt}.json'),'r'))
 
-            // this.game_obstacles = json.load(open(resource_path(f'JsonFiles/Player_3/GameSeeds_{this.player.attempt}.json'),'r'))
-
-            // training_attempts = [5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25,27,28,29,30,31,32,33,34,35,36]
-            // if not (this.player.attempt in training_attempts):
-            //     this.curr_obstacle[-1].setObstacleParams(**this.game_obstacles[str(this.seeds_used)])
-            //     this.seeds_used += 1            
+        //     // training_attempts = [5,6,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,23,24,25,27,28,29,30,31,32,33,34,35,36]
+        //     // if not (this.player.attempt in training_attempts):
+        //     //     this.curr_obstacle[-1].setObstacleParams(**this.game_obstacles[str(this.seeds_used)])
+        //     //     this.seeds_used += 1            
                 
-            if (this.curr_obstacle[-1].obstacle_type == 'Regular'){
-                this.check_targets = true
-            }
-        }
-        if (!this.check_targets){
-            this.curr_obstacle[-1].setRegularObstacle()
-        }
+        //     if (this.curr_obstacle[this.curr_obstacle.length-1].obstacle_type == 'Regular'){
+        //         this.check_targets = true;
+        //     }
+        
+        // if (!this.check_targets){
+        //     this.curr_obstacle[this.curr_obstacle.length-1].setRegularObstacle();
+        // }
+    }
+
+    drawCircle(marker){
+        ctx.beginPath();
+        ctx.arc(marker.loc[0], marker.loc[1], marker.radius, 0, Math.PI*2);
+        ctx.fillStyle =  marker.marker_color;
+        ctx.fill();
+        ctx.closePath();
     }
 
     // displayDefault(saveframe = false){
@@ -731,23 +828,23 @@ class game{
     //     this.gamelog.clearLogLine()
 
     // calibrateGame():
-    //     call_time = time.time()
+    //     call_time = getTimeS()
 
     //     console.log('Calibration Start')
-    //     while (time.time() - call_time) < this.wait_time:
+    //     while (getTimeS() - call_time) < this.wait_time:
     //         this.saveframe = false
     //         this.displayDefault()
     //         text_center = ((this.frame_size_tuple[0]/2) + this.frame_offset,(this.frame_size_tuple[1]/2))
-    //         this.messageDisplay(f"{this.wait_time - int(time.time() - call_time)}", text_center, this.textcolor["black"])
+    //         this.messageDisplay(f"{this.wait_time - int(getTimeS() - call_time)}", text_center, this.textcolor["black"])
     //         pygame.display.update()
 
-    //     call_time = time.time()
-    //     while (time.time() - call_time) < this.wait_time:
+    //     call_time = getTimeS()
+    //     while (getTimeS() - call_time) < this.wait_time:
     //         // this.saveframe = true     //  NEED TO CHANGE THIS BACK TO CAPTURE IMAGES
     //         this.frame_id += 1
     //         this.displayDefault()
     //         text_center = ((this.frame_size_tuple[0]/2) + this.frame_offset,(this.frame_size_tuple[1]/2))
-    //         this.messageDisplay(f"{this.wait_time - int(time.time() - call_time)}", text_center, this.textcolor["green"])
+    //         this.messageDisplay(f"{this.wait_time - int(getTimeS() - call_time)}", text_center, this.textcolor["green"])
     //         pygame.display.update()
 
     //     console.log('Calibration End')
@@ -755,13 +852,13 @@ class game{
     //     this.saveframe = false
 
     // testGame():
-    //     call_time = time.time()
+    //     call_time = getTimeS()
     //     this.gamelog.createTestLogger()
     //     console.log('Test Start')
-    //     while (time.time() - call_time) < this.test_duration:
+    //     while (getTimeS() - call_time) < this.test_duration:
     //         ret, frame = this.video_capture.read()
     //         frame = cv2.flip(frame, 1)
-    //         this.curr_time = time.time()
+    //         this.curr_time = getTimeS()
 
     //         frame, center, blob_area = this.blobDetect(frame)
     //         if blob_area >= this.blob_area:
@@ -779,12 +876,12 @@ class game{
 
     //         playerloc = (int(this.player.loc[0]/this.width_ratio) + this.frame_offset, int(this.player.loc[1]/this.height_ratio))
     //         pygame.draw.circle(this.game_display, this.player.marker_color, playerloc, int(this.scaling_factor*this.player.radius))
-    //         this.messageDisplay(f"{int(this.test_duration - (time.time() - call_time))}s", \
+    //         this.messageDisplay(f"{int(this.test_duration - (getTimeS() - call_time))}s", \
     //                                                     (this.frame_size_tuple[0] + int(this.frame_offset*3/2), this.frame_size_tuple[1]/2), this.textcolor["gray"])
-    //         text_rect = this.getTextRect(f"{int(this.test_duration - (time.time() - call_time))}") // TO CHANGE
+    //         text_rect = this.getTextRect(f"{int(this.test_duration - (getTimeS() - call_time))}") // TO CHANGE
     //         this.messageDisplay('Time:', (this.frame_size_tuple[0] + int(this.frame_offset*3/2), this.frame_size_tuple[1]/2 - text_rect[3]), this.textcolor["gray"], "small")
 
-    //         this.gamelog.addTestLine((time.time() - call_time), this.player.loc)
+    //         this.gamelog.addTestLine((getTimeS() - call_time), this.player.loc)
 
     //         pygame.display.update()
 
@@ -797,8 +894,9 @@ class game{
     //     new_loc[1] = center[1]
     //     return new_loc
 
-    // resetRotationAngle(this,rot_angle = 0):
-    //     this.rotation_angle = rot_angle //degrees
+    resetRotationAngle(rot_angle = 0){
+        this.rotation_angle = rot_angle; //degrees
+    }
 
     // rotateMarkerPosition(new_loc):
     //     // console.log(shape)

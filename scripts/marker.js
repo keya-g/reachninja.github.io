@@ -17,6 +17,9 @@ class marker{
         this.setObservable();
         this.setStartTime();
         this.obs_start = getTimeS();
+        if (marker_type != 'Target'){
+            // console.log(marker_type + 'updated obs start in reset');
+        }
     }
 
     setRadius(rad ){
@@ -36,10 +39,12 @@ class marker{
     }
 
     checkObservable(curr_time){
+        // console.log(this.obs_start);
         if (this.max_unobs_time == 0){
             this.observable = true;
         }
 
+        // console.log((curr_time - this.obs_start));
         if (this.observable == false){
             if (((curr_time - this.obs_start) > this.max_obs_time && this.unobs_start == -1) || 
                              +   ((curr_time - this.unobs_start) < this.max_unobs_time && this.obs_start == -1)){
@@ -50,11 +55,14 @@ class marker{
                 }
             }         
             else{
+                // console.log('here in inner else ' + curr_time + ' last time ' + this.obs_start); 
                 this.visible = true;
                 this.unobs_start = -1;
                 if (this.obs_start == -1){
                     this.obs_start = curr_time;
+                    // console.log('updated obs start');
                 }
+
             }
         }                    
         else{
@@ -62,6 +70,7 @@ class marker{
             this.unobs_start = -1;
             if (this.obs_start == -1){
                 this.obs_start = curr_time;
+                // console.log('updated obs start2');
             }
         }
             

@@ -19,12 +19,15 @@ mirror = false;
 var newplayer = new player(gameshape, damping, mirror);
 document.addEventListener("mousemove", mouseMoveHandler, false);
 
+var game_object = new game();
 
 
-for(let c=0; c<obstaclecount; c++) {
-    targets.push(new obstacles(gameshape, ctime, expl));
-    console.log(targets[c].loc)
-}
+// for(let c=0; c<obstaclecount; c++) {
+//     targets.push(new obstacles(gameshape, ctime, expl));
+//     console.log(targets[c].loc)
+// }
+
+
 
 
 
@@ -93,22 +96,32 @@ function mouseMoveHandler(e) {
     }
 
     curr_time = getTimeS();
-    console.log(newX,newY);
+    // console.log(newX,newY);
     newplayer.updatePosition([newX,newY], curr_time);
-    console.log(newplayer.loc);
+    // console.log(newplayer.loc);
     var mouse_loc = [newX, newY];
     return mouse_loc;
 }
 
 
-var interval = setInterval(draw, 1);
+// var interval = setInterval(draw, 1);
 
-// draw()
-// setTimeout(function(){ console.log("Next step"); draw();}, 2000);
-// setTimeout(function(){ console.log("Next step"); draw();}, 2000);
-// setTimeout(function(){ console.log("Next step"); draw();}, 2000);
-// setTimeout(function(){ console.log("Next step"); draw();}, 2000);
-// setTimeout(function(){ console.log("Next step"); draw();}, 2000);
+game_object.startrun()
+
+function rungame(){
+    game_object.player.loc = newplayer.loc;
+    game_object.run();
+}
+
+var interval = setInterval(rungame,1);
+
+// rungame()
+
+// setTimeout(function(){ console.log("Next step"); game_object.run();}, 2000);
+// setTimeout(function(){ console.log("Next step"); game_object.run();}, 2000);
+// setTimeout(function(){ console.log("Next step"); game_object.run();}, 2000);
+// setTimeout(function(){ console.log("Next step"); game_object.run();}, 2000);
+// setTimeout(function(){ console.log("Next step"); game_object.run();}, 2000);
 
 
 

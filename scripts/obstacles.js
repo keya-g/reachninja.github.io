@@ -3,6 +3,7 @@ class obstacles extends marker{
     constructor(gameshape, curr_time, exploding_perc, vel_max = 1, vel_min = 0.5, acc = 100, theta_max = -30, theta_min = -150, min_obstacles = 1, max_obstacles = 5, damping = 0, mirror = false,  max_obs_time = 1, max_unobs_time = 0.15, cur_id = 0){
         super('Target');
         this.shape = gameshape;
+        // console.log(gameshape);
         this.obstacle_id = cur_id;
         this.new_marker_no = 3;
         this.resetObstacle(curr_time, exploding_perc, vel_max= vel_max, vel_min = vel_min, acc = acc, theta_max = theta_max, theta_min = theta_min, max_obs_time = 1, max_unobs_time = 0.15);
@@ -28,7 +29,9 @@ class obstacles extends marker{
         this.original_velocity = this.velocity;
         this.velocity = [Math.cos(this.theta)*this.velocity, Math.sin(this.theta)*this.velocity];
         this.acceleration = [0,acc];
-        this.loc = [this.x, (this.shape[0] - this.y)];
+        this.loc = [this.x, (this.shape[1] - this.y)];
+        // console.log(this.loc);
+        // console.log('in reset ' + this.shape);
         this.last_time = curr_time;
         this.inframe = true;
         this.max_unobs_time = max_unobs_time;
@@ -71,31 +74,32 @@ class obstacles extends marker{
         }
 
         this.velocity = [Math.cos(this.theta)*this.velocity, Math.sin(this.theta)*this.velocity];
-        this.loc = [this.x, (this.shape[0] - this.y)];
+        this.loc = [this.x, (this.shape[1] - this.y)];
+
         this.new_marker_no = new_marker_no;
     }
 
 
     updatePosition(curr_time, player_loc, player_rad, magnetic_coef){
-        // console.log(this.loc)
+        // console.log('acc' + this.acceleration)
         var vel_change = [0,0];
         var acc_change = [0,0];
         // console.log(this.loc);
         // console.log(player_loc);
         var field_vector = arraySum(this.loc, scaleArray(player_loc,-1)); // this.loc - player_loc;
-        // console.log(field_vector);
+        // // console.log(field_vector);
         var field_dist = clamp(norm(field_vector),1,1000);
-        console.log(this.loc, player_loc,field_vector,norm(field_vector),this.radius)
+        // console.log(this.loc, player_loc,field_vector,norm(field_vector),this.radius)
         // console.log(acc_change)
         if (field_dist < this.radius*50){
             if (field_dist <= 0.01){
                 field_dist = 0.01;
             }
-
+            // console.log(field_vector);
             var field_dir = scaleArray(field_vector, 1/field_dist);
             // vel_change = (magnetic_coef*player_rad*this.radius/(field_dist^2))*field_dir
             acc_change = scaleArray(field_dir,(magnetic_coef*player_rad/(field_dist^2)));
-            console.log('Close enough!', acc_change);
+            // console.log('Close enough!', acc_change);
             // print(f"Acc {this.acceleration}, change {acc_change}")
         }
         // // print(f'Mag Coef {magnetic_coef}')
@@ -103,19 +107,20 @@ class obstacles extends marker{
             // vel_change = -vel_change
             acc_change = scaleArray(acc_change,-1);
         }
-        console.log("acceleration", arraySum(acc_change,this.acceleration));
+        // console.log("acceleration", arraySum(acc_change,this.acceleration));
         // console.log(this.velocity)
         // console.log("calculating")
         // this.velocity = np.clip(this.velocity + (curr_time - this.last_time)*this.acceleration + vel_change,-200,200)
         this.velocity = arrayClamp(arraySum(this.velocity, scaleArray(arraySum(acc_change,this.acceleration),(curr_time - this.last_time))),-500,500);
         //clamp(this.velocity + (curr_time - this.last_time)*(this.acceleration+acc_change),-500,500);
         // console.log(this.velocity)
-
+        // console.log("time" + curr_time + "old time" + this.last_time);
         this.loc = arraySum(this.loc,  scaleArray(this.velocity,(curr_time - this.last_time)));//(curr_time - this.last_time)*this.velocity);
         // console.log(this.loc)
         this.last_time = curr_time;
         // print(f"Shape {this.shape}; Loc {this.loc}")
-        if (this.loc[0] >= 0 && this.loc[0] < this.shape[1] && this.loc[1] >= 0 && this.loc[1] < this.shape[0]){
+        // console.log(this.shape);
+        if (this.loc[0] >= 0 && this.loc[0] < this.shape[0] && this.loc[1] >= 0 && this.loc[1] < this.shape[1]){
             this.inframe = true;
         }
         else{
@@ -125,7 +130,8 @@ class obstacles extends marker{
     }
 
     checkCollision(player, scaling_factor){
-        var dist = (this.loc - player.loc) 
+        var dist = arraySum(this.loc, scaleArray(player.loc,-1)) ;
+        // console.log(dist);
         return norm(dist)< (this.radius + player.radius)*scaling_factor;
     }
             

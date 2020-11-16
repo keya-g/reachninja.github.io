@@ -53,21 +53,21 @@ class player extends marker{
     }
 
     updatePosition(new_loc, curr_time){  
-        console.log('newloc', new_loc);      
+        // console.log('newloc', new_loc);      
         var av_loc = arraySum(this.loc, scaleArray(this.vel, (curr_time - this.last_time)));//this.loc + this.vel*(curr_time - this.last_time);
-        console.log('av_loc', av_loc);
+        // console.log('av_loc', av_loc);
         if (new_loc != this.loc){
             av_loc = arraySum(scaleArray(av_loc,this.old_loc_wt), scaleArray(new_loc,this.new_loc_wt));
         }
         av_loc[0] = clamp(av_loc[0], 0, this.shape[1]);
         av_loc[1] = clamp(av_loc[1], 0, this.shape[0]);
-        console.log('av_loc2',av_loc);
+        // console.log('av_loc2',av_loc);
         // print(f"vel: {this.vel}")
         this.updateAcceleration();
-        console.log('new acc', this.acc);
+        // console.log('new acc', this.acc);
         // print(f'New acceleration is {this.acc}, Old vel is {this.vel}')
         this.vel = clamp(arraySum(scaleArray(arraySum(av_loc, scaleArray(this.loc,-1)), 1/(curr_time - this.last_time)), scaleArray(this.acc,(curr_time - this.last_time))), 0, 500);
-        console.log('newvel', this.vel);
+        // console.log('newvel', this.vel);
         // print(f"velnew: {this.vel}")
         this.loc = av_loc;
         // print(f"newloc: {this.loc}")
@@ -83,7 +83,10 @@ class player extends marker{
     }
 
     setPlayID(){
-        this.play_id = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S");
+        var d = new Date();
+        this.play_id = d.getDate()+ "-" + d.getMonth() + "-" + d.getYear() + 
+                            "_" + d.getHours() + "-" + d.getMinutes() + "-" + d.getSeconds();// datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S");
+    
     }
 
     newGameInit(curr_time){

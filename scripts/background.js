@@ -12,6 +12,13 @@ function getTimeS(){
     return (d.getTime()/1000)
 }
 
+function clearCanvas(curr_canvas, fill_color = "black"){
+        var ctx = curr_canvas.getContext("2d");
+        ctx.clearRect(0, 0, curr_canvas.width, curr_canvas.height);
+        ctx.fillStyle = fill_color;
+        ctx.fillRect(0, 0, curr_canvas.width, curr_canvas.height);
+    }
+
 function drawBG() {
     // Make the gameCanvas background white
     ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
@@ -60,7 +67,7 @@ function arrayClamp(og_array, min, max) {
     // // console.log(og_array, min, max);
     for(c = 0; c < og_array.length; c++){
         num = og_array[c];
-        og_array[c] = (num <= min ? min : num >= max ? max : num);
+        og_array[c] = clamp(num, min, max); //(num <= min ? min : num >= max ? max : num);
     }
     return og_array;
 }
