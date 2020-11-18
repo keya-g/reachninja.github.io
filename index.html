@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Reach Ninja Home Page</title>
+    <style>
+        .box {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 50px;
+        }
+        .btn-group button {
+          background-color: #39AEB9; /* Green background */
+          border: 1px solid #1D585E; /* Green border */
+          color: white; /* White text */
+          padding: 10px 24px; /* Some padding */
+          cursor: pointer; /* Pointer/hand icon */
+          width: 100%; /* Set a width if needed */
+          display: block; /* Make the buttons appear below each other */
+        }
+        .btn-group button:not(:last-child) {
+          border-bottom: none; /* Prevent double borders */
+        }
+
+        /* Add a background color on hover */
+        .btn-group button:hover {
+          background-color: #1D585E;
+        }
+    </style>
+</head>
+<body>
+
+<div class = box>
+  <div class="btn-group">
+    <button id="mouse_game">Mouse Version</button>
+    <button id="webcam_game">Webcam Version</button>
+  </div>
+</div>
+
+<script type="text/javascript">
+  document.getElementById("mouse_game").onclick = function(){
+    location.href = "https://keya-g.github.io/reachninja.github.io/mouse_game";
+  }
+  document.getElementById("webcam_game").onclick = function(){
+    location.href = "https://keya-g.github.io/reachninja.github.io/video_game";
+  }
+</script>
+
+
+
+</body>
+</html>
