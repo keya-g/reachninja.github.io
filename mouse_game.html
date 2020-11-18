@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Reach Ninja Mouse Version</title>
+    <style>
+        * { padding: 0; margin: 0; }
+        canvas { background: #eee; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+#myCanvas {
+    padding: 0;
+    margin: auto;
+    display: block;
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+<style type="text/css">
+     * {
+   cursor: none;
+     }
+</style>
+
+<!-- <canvas id="scoreCanvas" width="20" height="640"></canvas>
+<canvas id="gameCanvas" width="960" height="640"></canvas>
+<canvas id="timeCanvas" width="20" height="640"></canvas> -->
+
+<div position="relative">
+
+<canvas id="scoreCanvas" width="200" height="480"
+style="border:1px solid #d3d3d3; float:left">
+Your browser does not support the canvas element.
+</canvas>
+<canvas id="gameCanvas" width="960" height="480"
+style="border:1px solid #d3d3d3; float:left">
+Your browser does not support the canvas element.
+</canvas>
+<canvas id="timeCanvas" width="200" height="480"
+style="border:1px solid #d3d3d3; float:left">
+Your browser does not support the canvas element.
+</canvas>
+</div>
+
+<script src="scripts/background.js"></script> <!-- Always the first script to be called -->
+<script src="scripts/marker.js"></script>
+<script src="scripts/obstacles.js"></script>
+<script src="scripts/player.js"></script>
+<script src="scripts/game.js"></script>
+
+
+<script src="scripts/main.js"></script>
+
+
+</body>
+</html>

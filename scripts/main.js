@@ -5,27 +5,14 @@ document.addEventListener("keyup", keyUpHandler, false);
 var testarray = [[3,6,7],[3,4,7]];
 console.log(testarray[1][1])
 
-// var handRadius = 10;
-// var handX = gameCanvas.width / 2;
-// var handY = gameCanvas.height / 2;
-var obstaclecount = 1
 var gameshape = [gameCanvas.height, gameCanvas.width]
 ctime = getTimeS();
-expl = 0.33
-var targets = new Array();
-
 damping = 0;
 mirror = false;
 var newplayer = new player(gameshape, damping, mirror);
 document.addEventListener("mousemove", mouseMoveHandler, false);
 
 var game_object = new game();
-
-
-// for(let c=0; c<obstaclecount; c++) {
-//     targets.push(new obstacles(gameshape, ctime, expl));
-//     console.log(targets[c].loc)
-// }
 
 
 

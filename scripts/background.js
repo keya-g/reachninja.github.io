@@ -2,9 +2,9 @@
 document.body.style.backgroundColor = "black";
 let gameCanvas = document.getElementById("gameCanvas");
 let ctx = gameCanvas.getContext("2d");
-let scoreCanvas = document.getElementById("scoreCanvas");
+let scoreCanvas = document.getElementById("leftCanvas");
 let sc_ctx = scoreCanvas.getContext("2d");
-let timeCanvas = document.getElementById("timeCanvas");
+let timeCanvas = document.getElementById("rightCanvas");
 let tm_ctx = timeCanvas.getContext("2d");
 
 function getTimeS(){

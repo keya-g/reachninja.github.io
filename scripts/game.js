@@ -51,7 +51,7 @@ class game{
         var scale_mat = [[1,0],[0,1]];
         this.damping_mat = scaleMatrix(scale_mat,this.damping);
         // this.damping_mat = this.damping*np.array(((-1, -1),(-1, 1)));
-        this.player.resetDamping(this.damping, old_loc_wt = 0.5, new_loc_wt = 0.5) // Setting equal weightage to actual location && predicted location to allow damping effect
+        this.player.resetDamping(this.damping, old_loc_wt = 0.3, new_loc_wt = 0.7) // Setting equal weightage to actual location && predicted location to allow damping effect
     }
 
     initializeGameType(exploding_perc = 0.33, max_unobs_time = 0.2, max_obs_time = 0.8, 
@@ -77,7 +77,10 @@ class game{
             this.stationary = true;
         }
     }
-        
+    
+    resetMagneticCoef(magnetic_coef){
+        this.magnetic_coef = magnetic_coef;
+    }
 
     initializeGameFrame(){
         // Function to initialilze the game screen size - background etc.
@@ -149,15 +152,17 @@ class game{
         // clock = pygame.time.Clock()
         
         this.crashed = false;
-        this.game_mode = 'StartPlay';  // null;
+        // this.game_mode = null;
         // key = cv2.waitKey(1)
         // key = key & 0xFF
 
         var player_id = 3;
-        gameshape = [gameCanvas.width, gameCanvas.height];
-        this.player = new player(gameshape, this.damping, this.mirror, player_id);
+        var gameshape = [gameCanvas.width, gameCanvas.height];
+        this.player = new player(gameshape, this.damping, this.mirror, player_id, 0.5, 0.5);
+
         // this.init_line = f"Screen: {this.screen_size_tuple}; Original: {this.original_frame_tuple}; Modified: {this.frame_size_tuple}";
         // this.gamelog = Gamelog(this.player, this.game_id)
+        
         
     }
         // console.log(t_old);
@@ -217,12 +222,17 @@ class game{
                     console.log('Starting... ');
                     // alert('starting');
                     this.player.setStartTime();
+                    this.player.last_time = getTimeS();
                     this.game_type = current_game_type;
                     this.frame_id = 1;
         //             // this.waitGame(getTimeS());
                     this.check_targets = false;
                     console.log('Here');
                     this.initializeNewGame();
+                    if (tracking_type == "Video"){
+                        this.resetMagneticCoef(0);
+                        this.player.resetObsTime(1,0);
+                    }
         //             // this.gamelog.newGameLog(this.player.attempt, this.init_line);
                 }
             }
@@ -310,6 +320,7 @@ class game{
         drawBG();
         // console.log(this.player.checkObservable(getTimeS()));
         if (this.player.checkObservable(getTimeS())) {
+            // console.log(this.player.loc);
             this.drawCircle(this.player);
         }            
 
@@ -484,7 +495,7 @@ class game{
         // this.check_targets has not been updates so it will still be false if null of the obstacles still on screen are 'Regular'
         while (this.curr_obstacle.length < this.obstacle_count){
             this.cur_obstacle_id += 1;
-            ctime = getTimeS();
+            var ctime = getTimeS();
             var new_obstacle = new obstacles(gameshape, ctime, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id);
             this.curr_obstacle.push(new_obstacle);
             // console.log('new obstacle ' + new_obstacle.loc);
@@ -660,10 +671,10 @@ class game{
         this.player.newGameInit(this.current_time);
         
         console.log('Attempt' + this.player.attempt);
-        // this.player.resetObsTime(1,0);
+        this.player.resetObsTime(1,0);
 
         this.initializeGameType();
-        this.player.resetObsTime(1,1);
+        // this.player.resetObsTime(1,1);
         console.log('player start' + this.player.start_time);
 
         // // if this.player.attempt in [1,38]:

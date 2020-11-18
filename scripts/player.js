@@ -1,5 +1,5 @@
 class player extends marker{
-    constructor(gameshape, damping, mirror, old_loc_wt = 0.3, new_loc_wt = 0.7, id = 1){
+    constructor(gameshape, damping, mirror, id = 1, old_loc_wt = 0.3, new_loc_wt = 0.7){
         super("Player");
         this.id = id;
         this.shape = gameshape;
@@ -56,12 +56,13 @@ class player extends marker{
         // console.log('newloc', new_loc);      
         var av_loc = arraySum(this.loc, scaleArray(this.vel, (curr_time - this.last_time)));//this.loc + this.vel*(curr_time - this.last_time);
         // console.log('av_loc', av_loc);
+        // this.old_loc_wt = 0.3; 
         if (new_loc != this.loc){
             av_loc = arraySum(scaleArray(av_loc,this.old_loc_wt), scaleArray(new_loc,this.new_loc_wt));
         }
-        av_loc[0] = clamp(av_loc[0], 0, this.shape[1]);
-        av_loc[1] = clamp(av_loc[1], 0, this.shape[0]);
-        // console.log('av_loc2',av_loc);
+        av_loc[0] = clamp(av_loc[0], 0, this.shape[0]);
+        av_loc[1] = clamp(av_loc[1], 0, this.shape[1]);
+        // console.log('newloc', new_loc, 'av_loc2',av_loc);
         // print(f"vel: {this.vel}")
         this.updateAcceleration();
         // console.log('new acc', this.acc);
@@ -71,6 +72,7 @@ class player extends marker{
         // print(f"velnew: {this.vel}")
         this.loc = av_loc;
         // print(f"newloc: {this.loc}")
+        // console.log('new loc ', this.loc);
         this.last_time = curr_time;
     }
 
