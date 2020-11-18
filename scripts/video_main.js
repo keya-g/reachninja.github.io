@@ -32,6 +32,7 @@ function main(){
         var begin = Date.now();
         var delay = 1000/FPS - (Date.now() - begin);
         // console.log(game_object.game_mode);
+        console.log(gameshape);
         if (game_object.game_mode != null){
             setTimeout(rungame, delay);
         }
@@ -63,7 +64,6 @@ function rungame(){
     curr_time = getTimeS();
     // console.log(curr_time);
     // console.log(arraypt);
-    
     game_object.player.updatePosition(arraypt, curr_time);
     game_object.run();
 }

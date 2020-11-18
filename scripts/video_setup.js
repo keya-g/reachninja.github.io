@@ -138,12 +138,12 @@ function mouseDownHandler(e) {
     [relativeX, relativeY] = getMousePosition(e, gameCanvas);
     
     inframe = [false, false];
-    if(relativeX > 0 && relativeX < display_height) {
+    if(relativeX > 0 && relativeX < display_width) {
         pointcX = relativeX;
         inframe[0] = true;
     }
 
-    if(relativeY > 0 && relativeY < display_width) {
+    if(relativeY > 0 && relativeY < display_height) {
         pointcY = relativeY;
         inframe[1] = true;
     }
