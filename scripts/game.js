@@ -56,7 +56,7 @@ class game{
 
     initializeGameType(exploding_perc = 0.33, max_unobs_time = 0.2, max_obs_time = 0.8, 
                                 vel_max = 1, vel_min = 0.5, acc = 100, theta_max = -30, theta_min = -90,
-                                min_obstacles = 1, max_obstacles = 4, damping = 0, mirror = false, magnetic_coef = 5000 ){
+                                min_obstacles = 1, max_obstacles = 4, damping = 0, mirror = false, magnetic_coef = 1000 ){
         this.exploding_perc = exploding_perc;
         this.max_unobs_time = max_unobs_time;
         this.max_obs_time = max_obs_time;
@@ -230,10 +230,11 @@ class game{
                     console.log('Here');
                     this.initializeNewGame();
                     if (tracking_type == "Video"){
-                        this.resetMagneticCoef(0);
-                        this.player.resetObsTime(1,0);
+                        this.resetMagneticCoef(1000);
+                        this.player.resetObsTime(1,1);
                     }
                     else{
+                        this.resetMagneticCoef(5000);
                         this.player.resetObsTime(1,1);
                     }
         //             // this.gamelog.newGameLog(this.player.attempt, this.init_line);
