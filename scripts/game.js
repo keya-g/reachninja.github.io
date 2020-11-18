@@ -233,6 +233,9 @@ class game{
                         this.resetMagneticCoef(0);
                         this.player.resetObsTime(1,0);
                     }
+                    else{
+                        this.player.resetObsTime(1,1);
+                    }
         //             // this.gamelog.newGameLog(this.player.attempt, this.init_line);
                 }
             }
@@ -345,7 +348,12 @@ class game{
         time_line = Math.ceil(this.play_time - (this.curr_time - this.player.start_time));
         this.writeOnCanvas(timeCanvas, time_line, [timeCanvas.width/2-20, timeCanvas.height/2+50], "gray", "50px");
 
-        var disp_frames = 10;
+        if (tracking_type == "Video"){
+            var disp_frames = 10;   
+        }
+        else{
+            var disp_frames = 100;
+        }
 
         
         if (this.display_score > 0 && this.display_score <= disp_frames){
