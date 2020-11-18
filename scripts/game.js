@@ -158,7 +158,7 @@ class game{
 
         var player_id = 3;
         var gameshape = [gameCanvas.width, gameCanvas.height];
-        this.player = new player(gameshape, this.damping, this.mirror, player_id, 0.2, 0.8);
+        this.player = new player(gameshape, this.damping, this.mirror, player_id, 0, 1);
 
         // this.init_line = f"Screen: {this.screen_size_tuple}; Original: {this.original_frame_tuple}; Modified: {this.frame_size_tuple}";
         // this.gamelog = Gamelog(this.player, this.game_id)
