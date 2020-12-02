@@ -67,7 +67,13 @@ class player extends marker{
         this.updateAcceleration();
         // console.log('new acc', this.acc);
         // print(f'New acceleration is {this.acc}, Old vel is {this.vel}')
-        this.vel = clamp(arraySum(scaleArray(arraySum(av_loc, scaleArray(this.loc,-1)), 1/(curr_time - this.last_time)), scaleArray(this.acc,(curr_time - this.last_time))), 0, 500);
+
+        var newvel = clamp(arraySum(scaleArray(arraySum(av_loc, scaleArray(this.loc,-1)), 1/(curr_time - this.last_time)), scaleArray(this.acc,(curr_time - this.last_time))), 0, 300);
+        if (!(isFinite(av_loc[0]*this.loc[0]*(-1))) || !(isFinite(1/(curr_time - this.last_time)))){
+            // console.log('here', arraySum(av_loc, scaleArray(this.loc,-1)), 1/(curr_time - this.last_time))
+            newvel = this.vel;
+        }
+        this.vel = newvel;
         // console.log('newvel', this.vel);
         // print(f"velnew: {this.vel}")
         this.loc = av_loc;

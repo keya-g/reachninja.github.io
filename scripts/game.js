@@ -160,8 +160,9 @@ class game{
         var gameshape = [gameCanvas.width, gameCanvas.height];
         this.player = new player(gameshape, this.damping, this.mirror, player_id, 0, 1);
 
-        // this.init_line = f"Screen: {this.screen_size_tuple}; Original: {this.original_frame_tuple}; Modified: {this.frame_size_tuple}";
+        this.init_line = "Screen: " + gameshape;
         // this.gamelog = Gamelog(this.player, this.game_id)
+        this.gamelog = new gamelog(this.player, this.game_id);
         
         
     }
@@ -231,13 +232,13 @@ class game{
                     this.initializeNewGame();
                     if (tracking_type == "Video"){
                         this.resetMagneticCoef(1000);
-                        this.player.resetObsTime(1,1);
+                        this.player.resetObsTime(1,0);
                     }
                     else{
                         this.resetMagneticCoef(5000);
-                        this.player.resetObsTime(1,1);
+                        this.player.resetObsTime(1,0);
                     }
-        //             // this.gamelog.newGameLog(this.player.attempt, this.init_line);
+                    this.gamelog.newGameLog(this.player.attempt, this.init_line)
                 }
             }
 
@@ -245,7 +246,7 @@ class game{
                 this.current_time = getTimeS();
                 this.saveframe = false;//InPlay      // NEED TO CHANGE THIS BACK TO TRUE TO SAVE IMAGES
                 this.updateGameFrame();
-                // this.updateGamelog();
+                this.updateGamelog();
             }
                 
             else if (this.game_mode == 'InPlay'){
@@ -256,6 +257,7 @@ class game{
                 //   console.log("Waited 2000 ms");
                 // }, 2000);
                 this.player.setStartTime();
+                // console.log(this.gamelog.datalog);
                 this.crashed = true;
             }
 
@@ -671,7 +673,7 @@ class game{
     }
 
     initializeNewGame(){
-        // this.gamelog.game_type = this.game_type;
+        this.gamelog.game_type = this.game_type;
         drawBG()
         this.game_mode = 'InPlay';
         this.display_score = 0;
@@ -684,7 +686,7 @@ class game{
 
         this.initializeGameType();
         // this.player.resetObsTime(1,1);
-        console.log('player start' + this.player.start_time);
+        // console.log('player start' + this.player.start_time);
 
         // // if this.player.attempt in [1,38]:
         // //     this.rs = np.random.RandomState(38)
@@ -841,11 +843,12 @@ class game{
     //     pygame.display.update()
     // }
 
-    // updateGamelog():
-    //     this.gamelog.startPlayerLine(this.current_time, this.player, (this.obstacle_count + 1), this.game_type)
-    //     this.gamelog.addObstacleLine(this.curr_obstacle)
-    //     this.gamelog.writeLogLine()
-    //     this.gamelog.clearLogLine()
+    updateGamelog(){
+        this.gamelog.startPlayerLine(this.current_time, this.player, (this.obstacle_count + 1), this.game_type);
+        this.gamelog.addObstacleLine(this.curr_obstacle);
+        this.gamelog.writeLogLine();
+        this.gamelog.clearLogLine();
+    }
 
     // calibrateGame():
     //     call_time = getTimeS()

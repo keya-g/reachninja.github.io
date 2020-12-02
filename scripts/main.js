@@ -2,8 +2,6 @@
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
-var testarray = [[3,6,7],[3,4,7]];
-console.log(testarray[1][1])
 
 var gameshape = [gameCanvas.width, gameCanvas.height];
 ctime = getTimeS();
@@ -13,10 +11,6 @@ var newplayer = new player(gameshape, damping, mirror);
 document.addEventListener("mousemove", mouseMoveHandler, false);
 
 var game_object = new game();
-
-
-
-
 
 function draw() {
     drawBG()    // Make background black and white - from other script
@@ -77,21 +71,26 @@ function keyUpHandler(e) {
 function mouseMoveHandler(e) {
     var relativeX = e.clientX - gameCanvas.offsetLeft;
     var relativeY = e.clientY - gameCanvas.offsetTop;
-    // newX = 0; newY = 0;
-    if(relativeX > 0 && relativeX < gameCanvas.width) {
+    newX = newplayer.loc[0];
+    newY = newplayer.loc[1];
+    // newX = gameCanvas.width/2; newY = gameCanvas.height/2;
+    if(relativeX > 0 && relativeX < gameCanvas.width && !(isNaN(relativeX))) {
         newX = relativeX;
         // newY = relativeY;
     }
-    if(relativeY > 0 && relativeY < gameCanvas.height) {
+    if(relativeY > 0 && relativeY < gameCanvas.height && !(isNaN(relativeY))) {
         newY = relativeY;
     }
 
 
 
     curr_time = getTimeS();
-    // console.log(newX,newY);
+    // if (isNaN(newX+newY)){
+    //     console.log(newX,newY);
+    // }
+    
     newplayer.updatePosition([newX,newY], curr_time);
-    // console.log(newplayer.loc);
+    // console.log('in main', newplayer.vel);
     var mouse_loc = [newX, newY];
     return mouse_loc;
 }
@@ -102,7 +101,7 @@ var tracking_type = "Mouse";
 game_object.startrun()
 
 function rungame(){
-    game_object.player.loc = newplayer.loc;
+    game_object.player = newplayer;
     if (game_object.game_mode == null){
         game_object.game_mode = 'StartPlay';
     }
@@ -130,7 +129,7 @@ function resetDisplaySize(){
 }
 
 resetDisplaySize()
-var interval = setInterval(rungame,1);
+var interval = setInterval(rungame,10);
 
 // rungame()
 
