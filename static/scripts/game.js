@@ -36,7 +36,10 @@ class game{
         this.display_score = 0;
         this.old_score = 0;
         this.saveframe = false;
-        this.game_params = null; // json.load(open(resource_path('JsonFiles/Player_3/GameParams.json'),'r'));
+        this.game_params = {"exploding_perc" : 0.33, "max_unobs_time" : 0.2, "max_obs_time" : 0.8, 
+                                "vel_max" : 1, "vel_min" : 0.5, "acc" : 100, "theta_max" : -30, "theta_min" : -90,
+                                "min_obstacles" : 1, "max_obstacles" : 4, "damping" : 0, "mirror" : false, "magnetic_coef" : 1000 }
+        // null; // json.load(open(resource_path('JsonFiles/Player_3/GameParams.json'),'r'));
         this.initializeGameType();
         this.initializeGameFrame();
         this.setGameID();
@@ -55,26 +58,25 @@ class game{
         this.player.resetDamping(this.damping, old_loc_wt = 0.3, new_loc_wt = 0.7) // Setting equal weightage to actual location && predicted location to allow damping effect
     }
 
-    initializeGameType(exploding_perc = 0.33, max_unobs_time = 0.2, max_obs_time = 0.8, 
-                                vel_max = 1, vel_min = 0.5, acc = 100, theta_max = -30, theta_min = -90,
-                                min_obstacles = 1, max_obstacles = 4, damping = 0, mirror = false, magnetic_coef = 1000 ){
-        this.exploding_perc = exploding_perc;
-        this.max_unobs_time = max_unobs_time;
-        this.max_obs_time = max_obs_time;
-        this.acceleration = [0,acc];
-        this.velocity_min = vel_min;
-        this.velocity_max = vel_max;
-        this.theta_max = theta_max;
-        this.theta_min = theta_min;
-        this.min_obstacles = min_obstacles;
-        this.max_obstacles = max_obstacles;
-        this.damping = damping; // 0.5 // -0.5
+    initializeGameType(){
+        // console.log(this.game_params);
+        this.exploding_perc = this.game_params["exploding_perc"];
+        this.max_unobs_time = this.game_params["max_unobs_time"];
+        this.max_obs_time = this.game_params["max_obs_time"];
+        this.acceleration = [0,this.game_params["acc]"]];
+        this.velocity_min = this.game_params["vel_min"];
+        this.velocity_max = this.game_params["vel_max"];
+        this.theta_max = this.game_params["theta_max"];
+        this.theta_min = this.game_params["theta_min"];
+        this.min_obstacles = this.game_params["min_obstacles"];
+        this.max_obstacles = this.game_params["max_obstacles"];
+        this.damping = this.game_params["damping"]; // 0.5 // -0.5
         var scale_mat = [[1,0],[0,1]];
         this.damping_mat = scaleMatrix(scale_mat,this.damping);
         // this.damping_mat = this.damping*np.array(((-1, -1),(-1, 1)))
-        this.mirror = mirror;
-        this.magnetic_coef = magnetic_coef;
-        if (vel_max == vel_min && vel_max == 0){
+        this.mirror = this.game_params["mirror"];
+        this.magnetic_coef = this.game_params["magnetic_coef"];
+        if (this.velocity_max == this.velocity_min && this.velocity_max == 0){
             this.stationary = true;
         }
     }
@@ -160,7 +162,8 @@ class game{
         var player_id = 3;
         var gameshape = [gameCanvas.width, gameCanvas.height];
         this.player = new player(gameshape, this.damping, this.mirror, player_id, 0, 1);
-
+        
+        
         this.init_line = "Screen: " + gameshape;
         // this.gamelog = Gamelog(this.player, this.game_id)
         this.gamelog = new gamelog(this.player, this.game_id);
@@ -214,7 +217,7 @@ class game{
             var current_game_type = "Control";
             this.sendlog = false;
             // console.log(this.game_mode);
-
+            // console.log(this.player.id);
             if (this.game_mode == 'StartPlay' && this.player.start_time == -1){
                 // Check for more than 40 attenpts
                 if (this.player.attempt >= 40){
@@ -230,7 +233,7 @@ class game{
                     this.frame_id = 1;
         //             // this.waitGame(getTimeS());
                     this.check_targets = false;
-                    console.log('Here');
+                    // console.log('Here');
                     this.initializeNewGame();
                     if (tracking_type == "Video"){
                         this.resetMagneticCoef(1000);
@@ -396,19 +399,70 @@ class game{
     }
 
     sendData(){
-    let xhr = new XMLHttpRequest();
-    let url = "get_data";
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            let json = JSON.parse(xhr.responseText);
-            // console.log(json);
-        }
-    };
+        let xhr = new XMLHttpRequest();
+        let url = "get_data";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                let json = JSON.parse(xhr.responseText);
+                // console.log(json);
+            }
+        };
         let data = JSON.stringify({'logname':this.gamelog.logname, 'logdata': this.gamelog.datalog});
         // console.log(data);
         xhr.send(data);
+    }
+
+    getGameParam(){
+        let xhr = new XMLHttpRequest();
+        let url = "send_gameparam";
+        xhr.open("POST", url, false);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        var gameparam_json = null;
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                gameparam_json = JSON.parse(xhr.responseText);
+                // console.log(gameparam_json);
+                // this.setGameParams(gameparam_json);
+                // this.game_params = 6;
+            }
+        };
+        // console.log(this.player.id)
+        let data = JSON.stringify({"attempt":this.player.attempt,"player_no":this.player.id});
+        // console.log(data);  
+        xhr.send(data);
+        // console.log(json);
+
+        this.game_params = gameparam_json;
+
+    }
+
+    getGameSeeds(){
+        let xhr = new XMLHttpRequest();
+        let url = "send_gameseeds";
+        xhr.open("POST", url, false);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        var gameseeds_json = null;
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                gameseeds_json = JSON.parse(xhr.responseText);
+                // console.log(gameseeds_json);
+            }
+        };
+        // console.log(this.player.id)
+        let data = JSON.stringify({"attempt":(this.player.attempt),"player_no":this.player.id});
+        xhr.send(data);
+
+        this.game_obstacle_seeds = gameseeds_json;
+    }
+
+    setGameParams(gameparam_json)
+    {
+        console.log('setting params')
+        this.game_params = gameparam_json;
     }
 
     stepGame(){
@@ -528,7 +582,14 @@ class game{
             this.cur_obstacle_id += 1;
             var ctime = getTimeS();
             var new_obstacle = new obstacles(gameshape, ctime, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id);
+            new_obstacle.setObstacleParams(this.game_obstacle_seeds[this.cur_obstacle_id-1]);
             this.curr_obstacle.push(new_obstacle);
+            this.curr_obstacle.push(new_obstacle);
+
+
+
+
+
             // console.log('new obstacle ' + new_obstacle.loc);
             // this.cur_obstacle_id += 1;
             // new_obstacle = new obstacles([gameCanvas.width,gameCanvas.height], +
@@ -704,7 +765,7 @@ class game{
         console.log('Attempt' + this.player.attempt);
         this.player.resetObsTime(1,0);
 
-        this.initializeGameType();
+        
         // this.player.resetObsTime(1,1);
         // console.log('player start' + this.player.start_time);
 
@@ -792,6 +853,14 @@ class game{
         // // this.player.exploding_perc = 0.9
         // // console.log('Exploding percentage forced to 0.9 - Remove')
 
+        // this.game_params =
+        this.getGameParam();
+        this.getGameSeeds();
+        // console.log('after',this.game_params);
+        // console.log('after seeds',this.game_obstacle_seeds);
+        // this.initializeGameType();
+        this.initializeGameType();
+
         this.newobstacle_count();
         // this.curr_obstacle = [];
         // this.seeds_used = 0;
@@ -802,14 +871,23 @@ class game{
         // console.log( this.obstacle_count);
         // console.log(this.curr_obstacle);
 
+        console.log('Setting starting seeds')
         for (var ob_ctr = 0; ob_ctr < this.obstacle_count; ob_ctr ++){
             this.cur_obstacle_id += 1;
             var new_obstacle = new obstacles(gameshape, this.current_time, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id);
+            // console.log(this.game_obstacle_seeds[(this.cur_obstacle_id-1).toString()]['x'],new_obstacle.x)
+            new_obstacle.setObstacleParams(this.game_obstacle_seeds[this.cur_obstacle_id-1]);
+            // console.log(new_obstacle.loc, new_obstacle.velocity)
             this.curr_obstacle.push(new_obstacle);
             // console.log(this.curr_obstacle[ob_ctr].loc);
             // console.log(this.cur_obstacle_id);
             // console.log(ob_ctr);
         }
+
+
+
+
+
         // setTimeout(function(){ }, 3000);
         // console.log(this.curr_obstacle);        //     //// The following commented code is required for older curriculums where obstacle properties were being changed.
         //     // // if this.game_type == 'Control' || (this.game_type == 'Curriculum' && this.player.attempt in [1,2,3,34,35,36,37,38,39,40]):

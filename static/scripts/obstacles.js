@@ -7,6 +7,7 @@ class obstacles extends marker{
         this.obstacle_id = cur_id;
         this.new_marker_no = 3;
         this.resetObstacle(curr_time, exploding_perc, vel_max= vel_max, vel_min = vel_min, acc = acc, theta_max = theta_max, theta_min = theta_min, max_obs_time = 1, max_unobs_time = 0.15);
+        this.obstacle_params = {'x':[0,0], 'velocity': 100, 'theta' : 1.57, 'rad':3,  'type':'Regular' , 'new_marker_no' : 3};
     }
 
     resetObstacle(curr_time, exploding_perc, vel_max = 1, vel_min = 0.5, acc = 100, theta_max = -30, theta_min = -90, max_obs_time = 1, max_unobs_time = 0.15){
@@ -49,10 +50,11 @@ class obstacles extends marker{
         }
     }
 
-    setObstacleParams(x, velocity, theta, rad,  type, new_marker_no = 3){
-        this.x = [Math.ceil(x*this.shape[1])];
-        this.velocity = [velocity]*this.velocity_scale;//[np.clip(velocity,0.5,1)*this.velocity_scale]
-        this.theta = theta;
+    setObstacleParams(newparams){
+        this.obstacle_params = newparams;
+        this.x = Math.ceil(this.obstacle_params["x"]*this.shape[1]);
+        this.velocity = [this.obstacle_params["velocity"]]*this.velocity_scale;//[np.clip(velocity,0.5,1)*this.velocity_scale]
+        this.theta = this.obstacle_params["theta"];
         this.original_velocity = this.velocity;
 
         // // print(f'x {x}, velocity {velocity}, theta {theta}, rad {rad}, type {type}')
@@ -65,8 +67,9 @@ class obstacles extends marker{
         // // this.theta = -60*np.pi/180 // TO CHANGE REMOVE
         // // print(f'loc {this.x}, New {this.theta*180/np.pi}')
         
-        this.setRadius(rad);
-        if (type == 'Exploding'){
+        this.setRadius(this.obstacle_params["rad"]);
+
+        if (this.obstacle_params.type == 'Exploding'){
             this.setExplodingObstacle();
         }
         else{
@@ -75,8 +78,7 @@ class obstacles extends marker{
 
         this.velocity = [Math.cos(this.theta)*this.velocity, Math.sin(this.theta)*this.velocity];
         this.loc = [this.x, (this.shape[1] - this.y)];
-
-        this.new_marker_no = new_marker_no;
+        this.new_marker_no = this.obstacle_params["new_marker_no"];
     }
 
 
