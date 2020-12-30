@@ -1,10 +1,11 @@
 
 class obstacles extends marker{
-    constructor(gameshape, curr_time, exploding_perc, vel_max = 1, vel_min = 0.5, acc = 100, theta_max = -30, theta_min = -150, min_obstacles = 1, max_obstacles = 5, damping = 0, mirror = false,  max_obs_time = 1, max_unobs_time = 0.15, cur_id = 0){
+    constructor(gameshape, curr_time, exploding_perc, vel_max = 1, vel_min = 0.5, acc = 100, theta_max = -30, theta_min = -150,max_obs_time = 1, max_unobs_time = 0.15, cur_id = 0, min_obstacles = 1, max_obstacles = 5, damping = 0, mirror = false){
         super('Target');
         this.shape = gameshape;
         // console.log(gameshape);
         this.obstacle_id = cur_id;
+        // console.log('In obstacle def ', cur_id)
         this.new_marker_no = 3;
         this.resetObstacle(curr_time, exploding_perc, vel_max= vel_max, vel_min = vel_min, acc = acc, theta_max = theta_max, theta_min = theta_min, max_obs_time = 1, max_unobs_time = 0.15);
         this.obstacle_params = {'x':[0,0], 'velocity': 100, 'theta' : 1.57, 'rad':3,  'type':'Regular' , 'new_marker_no' : 3};

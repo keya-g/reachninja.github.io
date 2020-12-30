@@ -368,15 +368,16 @@ class game{
         
         if (this.display_score > 0 && this.display_score <= disp_frames){
             var score_change = this.player.score - this.old_score;
-            // console.log(score_change);
+            // console.log(this.player.score, this.old_score, score_change);
             var dispmsg = Math.ceil(score_change);
             if (score_change < 0){
                 dispmsg = Math.ceil(score_change);
             }
             this.writeOnCanvas(gameCanvas,dispmsg, this.player.loc, "black", "20px");
             this.display_score += 1;
-            if (this.display_score == disp_frames){
+            if (this.display_score >= disp_frames){
                 this.old_score = this.player.score;
+                // console.log('score updated')
                 this.display_score = 0;
             }
         }
@@ -524,6 +525,7 @@ class game{
 
             //Check for collision of player && marker - is this happens, score change && reset obstacle count
             if (o.checkCollision(this.player, 1)){ //  this.scaling_factor/2)){
+                console.log('Collided! obstacle id ', o.obstacle_id)
                 var addscore = this.updateScore(o);
                 
                 // if o.obstacle_type == 'Exploding':
@@ -584,10 +586,6 @@ class game{
             var new_obstacle = new obstacles(gameshape, ctime, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id);
             new_obstacle.setObstacleParams(this.game_obstacle_seeds[this.cur_obstacle_id-1]);
             this.curr_obstacle.push(new_obstacle);
-            this.curr_obstacle.push(new_obstacle);
-
-
-
 
 
             // console.log('new obstacle ' + new_obstacle.loc);
@@ -740,16 +738,22 @@ class game{
 
     updateScore(marker){
         var addscore = 0;
+        // console.log('Adding score')
         if (marker.obstacle_type == 'Exploding'){
             addscore = -10;
         }
         else{
             var size_effect = (marker.max_radius - marker.radius) / (marker.max_radius - marker.min_radius);
             var velocity_effect = (marker.original_velocity/marker.velocity_scale)/(this.velocity_max);
-            // console.log(f'size {size_effect}, velocity {velocity_effect}')
+            // console.log('size ', size_effect, ' velocity ', velocity_effect);
             addscore = 10 + Math.ceil(10*size_effect) + Math.ceil(10*velocity_effect);
+            if (addscore > 30){
+                console.log(Math.ceil(10*size_effect), Math.ceil(10*velocity_effect))
+            }
         }
+        // console.log(this.player.score);
         this.player.score = this.player.score + addscore;
+        // console.log(this.player.score);
         return addscore;
     }
 
@@ -874,10 +878,12 @@ class game{
         console.log('Setting starting seeds')
         for (var ob_ctr = 0; ob_ctr < this.obstacle_count; ob_ctr ++){
             this.cur_obstacle_id += 1;
-            var new_obstacle = new obstacles(gameshape, this.current_time, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id);
+            var new_obstacle = new obstacles(gameshape, this.current_time, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id, this.min_obstacles, this.max_obstacles);
             // console.log(this.game_obstacle_seeds[(this.cur_obstacle_id-1).toString()]['x'],new_obstacle.x)
+            // console.log(new_obstacle.obstacle_id)
             new_obstacle.setObstacleParams(this.game_obstacle_seeds[this.cur_obstacle_id-1]);
             // console.log(new_obstacle.loc, new_obstacle.velocity)
+            // console.log(new_obstacle.obstacle_id)
             this.curr_obstacle.push(new_obstacle);
             // console.log(this.curr_obstacle[ob_ctr].loc);
             // console.log(this.cur_obstacle_id);

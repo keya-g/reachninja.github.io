@@ -35,6 +35,13 @@ class player extends marker{
         // print(f'param {old_loc_wt}, old loc wt {this.old_loc_wt}, new loc wt {this.new_loc_wt}')
     }
 
+    resetMovementParams(newplayer){
+        this.loc = newplayer.loc;
+        this.vel = newplayer.vel;
+        this.acc = newplayer.acc;
+        this.last_time = newplayer.last_time;
+    }
+
     resetObsTime(max_obs_time = 1, max_unobs_time = 0.15){
         // print(f'{max_obs_time} {max_unobs_time}')
         this.max_obs_time = max_obs_time;

@@ -102,7 +102,9 @@ game_object.startrun()
 
 function rungame(){
     curr_time = getTimeS();
-    game_object.player.updatePosition(newplayer.loc,curr_time);
+    // game_object.player.updatePosition(newplayer.loc,curr_time);
+    game_object.player.resetMovementParams(newplayer);
+    newplayer = game_object.player;
     if (game_object.game_mode == null){
         game_object.game_mode = 'StartPlay';
     }
