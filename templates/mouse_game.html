@@ -23,7 +23,8 @@
 <canvas id="gameCanvas" width="960" height="640"></canvas>
 <canvas id="timeCanvas" width="20" height="640"></canvas> -->
 
-
+<input id="PlayerID" type="hidden" value={{player_id}} />
+<input id="PlayerGroup" type="hidden" value={{player_group}} />
 <div class = box>
 <!-- <input id="startbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Start Game"/> -->
 <canvas id="leftCanvas" width="150" height="640"
@@ -40,12 +41,19 @@ Your browser does not support the canvas element.
 </canvas>
 </div>
 
+<script type="text/javascript">
+  var game_player_id = document.getElementById("PlayerID").value;
+  var game_player_group = document.getElementById("PlayerGroup").value;
+  console.log({game_player_id}, {game_player_group});
+</script>
+
 <script type="text/javascript" src="static/scripts/background.js"></script> <!-- Always the first script to be called -->
 <script type="text/javascript" src="static/scripts/marker.js"></script>
 <script type="text/javascript" src="static/scripts/obstacles.js"></script>
 <script type="text/javascript" src="static/scripts/player.js"></script>
 <script type="text/javascript" src="static/scripts/gamelog.js"></script>
 <script type="text/javascript" src="static/scripts/game.js"></script>
+
 
 
 <script type="text/javascript" src="static/scripts/main.js"></script>

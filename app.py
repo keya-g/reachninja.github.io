@@ -15,9 +15,11 @@ def index():
     print(request.method, 'er')
     if request.method == 'POST':
         # print(request.form)
+        player_id = request.form.get('PlayerID')
+        player_group = request.form.get('PlayerGroup')
         if request.form.get('mouse_game') == 'mouse_game':
             # print("mouse_game")
-            return render_template('mouse_game.html')
+            return render_template('mouse_game.html', player_id = player_id, player_group = player_group)
             
         elif  request.form.get('video_game') == 'video_game':
             # pass # do something else
