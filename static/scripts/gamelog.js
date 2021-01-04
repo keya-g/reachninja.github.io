@@ -17,7 +17,7 @@ class gamelog{
     // }
 
     newGameLog(attempt, init_line, max_obstacle_count = 6){
-        
+        this.datalog = "";
         this.attempt = attempt; 
         this.logLineArray = [""];   
         this.frame_id = 0;
@@ -77,7 +77,7 @@ class gamelog{
                         "PlayerVel:X,PlayerVel:Y,"+
                         "PlayerAcc:X,PlayerAcc:Y,"+
                         "Player:Int,Player:Score,"+
-                        "Player:Obs,Player:GameType"];
+                        "Player:Obs,Player:GameType,Player:GameMode"];
         for (var i = 1; i < max_obstacle_count+1; i++){
             this.logLine+=',';
             this.logLine+="M" + i + ":ID,";
@@ -94,11 +94,11 @@ class gamelog{
         this.clearLogLine();
     }
 
-    startPlayerLine(curr_time, player, obstacle_count, game_type, intervention_type = 0){
+    startPlayerLine(curr_time, player, obstacle_count, game_type, game_mode, intervention_type = 0){
         this.frame_id += 1;
         this.logLineArray = [this.frame_id, curr_time - player.start_time, player.attempt, player.play_id, obstacle_count, +
                         player.loc[0], player.loc[1], player.vel[0], player.vel[1], player.acc[0], player.acc[1],+
-                        intervention_type, player.score, player.visible, game_type];
+                        intervention_type, player.score, player.visible, game_type, game_mode];
                     }
 
     addObstacleLine(curr_obstacles){

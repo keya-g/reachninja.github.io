@@ -2,6 +2,11 @@
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
+var win1 = document.getElementById('win1');
+var win2 = document.getElementById('win2');
+var win3 = document.getElementById('win3');
+var err = document.getElementById('err');
+
 
 var gameshape = [gameCanvas.width, gameCanvas.height];
 ctime = getTimeS();

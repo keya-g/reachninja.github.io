@@ -24,7 +24,7 @@ def index():
         elif  request.form.get('video_game') == 'video_game':
             # pass # do something else
             print("Starting Webcam game")
-            return render_template('video_game.html')
+            return render_template('video_game.html', player_id = player_id, player_group = player_group)
         else:
             # pass # unknown
             return render_template("index.html")

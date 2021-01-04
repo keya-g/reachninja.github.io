@@ -6,7 +6,8 @@ function main(){
     if (cv_built == true && streaming){
 
         if (game_object == null){
-            game_object = new game();
+            game_object = new game(40);
+            console.log(game_object.play_time)
             game_object.game_mode = null;
         }
 

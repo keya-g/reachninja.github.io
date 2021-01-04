@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <head>
     <meta charset="utf-8" />
     <title>Reach Ninja Mouse Version</title>
@@ -19,14 +20,27 @@
 </head>
 <body>
 
-<!-- <canvas id="scoreCanvas" width="20" height="640"></canvas>
-<canvas id="gameCanvas" width="960" height="640"></canvas>
-<canvas id="timeCanvas" width="20" height="640"></canvas> -->
+<audio id="win1">   
+<source src="static/audio/pop1.wav" />   
+</audio>   
+
+<audio id="win2">   
+<source src="static/audio/pop4.wav" />   
+</audio>   
+
+<audio id="win3">   
+<source src="static/audio/pop6.wav" />   
+</audio>   
+
+<audio id="err">   
+<source src="static/audio/boom1.wav" />   
+</audio>   
+
 
 <input id="PlayerID" type="hidden" value={{player_id}} />
 <input id="PlayerGroup" type="hidden" value={{player_group}} />
+
 <div class = box>
-<!-- <input id="startbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Start Game"/> -->
 <canvas id="leftCanvas" width="150" height="640"
 style="z-index:1">
 Your browser does not support the canvas element.
@@ -45,6 +59,7 @@ Your browser does not support the canvas element.
   var game_player_id = document.getElementById("PlayerID").value;
   var game_player_group = document.getElementById("PlayerGroup").value;
   console.log({game_player_id}, {game_player_group});
+
 </script>
 
 <script type="text/javascript" src="static/scripts/background.js"></script> <!-- Always the first script to be called -->

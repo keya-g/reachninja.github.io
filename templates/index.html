@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <head>
     <meta charset="utf-8" />
     <title>Reach Ninja Home Page</title>
@@ -31,6 +31,9 @@
     </style>
 </head>
 <body>
+<audio id="win1">   
+  <source src="static/audio/pop1.wav" />   
+</audio>   
   <form method="post" action="/">
         <input type="text" name="PlayerID" placeholder="Your ID" />
         <input type="text" name="PlayerGroup" placeholder="Your Group" />
@@ -43,9 +46,19 @@
           </div>
         </div>
 
+        
+
         <!-- <input type="submit" value="Decrypt" name="Decrypt" /> -->
 
   </form>
+<button id="audioallowed" onClick="allowAudio()">Allow audio?</button>
+<script type="text/javascript">
+  function allowAudio(){
+    let sound = document.getElementById("win1");
+    sound.play();
+  }
+
+</script>
 
 
 
