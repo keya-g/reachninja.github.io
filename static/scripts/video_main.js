@@ -3,6 +3,7 @@
 
 function main(){
     // openFullscreen()
+    let resetcap = false;
     if (cv_built == true && streaming){
 
         if (game_object == null){
@@ -46,18 +47,31 @@ function main(){
 
 function rungame(){
     
-    src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
-    hsv = new cv.Mat(video.height, video.width, cv.CV_8UC3);
+    let src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+    let hsv = new cv.Mat(video.height, video.width, cv.CV_8UC3);
     
     // start processing.
+    
     cap.read(src);
-    cv.flip(src, src, 1);
+
+    // new_width = //actual_width*perc_red/100;
+    new_width = red_width;  // This value is set in video_setup.js
+    new_height = actual_height*red_width/actual_width; //actual_height*perc_red/100;
+
+    cv.resize(src, src, new cv.Size(new_width,new_height), 0, 0, cv.INTER_LINEAR);
+
+    // cv.flip(src, src, 1);
     var center = new cv.Point(pointcX, pointcY);
-    dst = src.clone();
+    let dst = src.clone();
     cv.cvtColor(src, hsv, cv.COLOR_RGB2HSV);
     let arraypt_old = game_object.player.loc;
     [dst, center, arraypt, blob_area] = blobdetect(src, dst, hsv);
+    // console.log(arraypt, center);
+    arraypt = scaleArray(arraypt, actual_width/red_width);
     
+    arraypt[0] = actual_width - arraypt[0];
+    // console.log(arraypt);
+
     src.delete();
     dst.delete();
     hsv.delete();

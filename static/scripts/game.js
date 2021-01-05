@@ -166,7 +166,8 @@ class game{
         var player_id = game_player_id; //3;
         console.log(game_player_id);
         console.log('in game ', player_id, game_group)
-        var gameshape = [gameCanvas.width, gameCanvas.height];
+        // var gameshape = [gameCanvas.width, gameCanvas.height];
+        console.log(gameshape);
         this.player = new player(gameshape, this.damping, this.mirror, player_id, 0, 1);
         
         
@@ -268,7 +269,7 @@ class game{
         if (this.crashed == true){
             if (confirm("Game ended! Restart?")){
                 this.game_mode = 'StartPlay';
-                this.gamelog.newGameLog = null;
+                // this.gamelog.newGameLog = null;
                 this.player.start_time = -1;
                 this.crashed = false;
             }
@@ -282,10 +283,12 @@ class game{
         if (this.player.checkObservable(getTimeS())) {  // If the player should be visible on screen
             // console.log(this.player.loc);
             this.drawCircle(this.player);
+            // console.log('player', this.player.loc);
         }            
 
         for (var c = 0; c<this.curr_obstacle.length; c++){ //For each obstacle
             this.drawCircle(this.curr_obstacle[c]);
+            // console.log(this.curr_obstacle[c].shape, this.curr_obstacle[c].loc);
         }
         
         
@@ -330,7 +333,7 @@ class game{
 
     // Write score or time on canvas
     writeOnCanvas(curr_canvas, display_text, text_loc, textcolor, textsize = "20px"){
-        var ctx = curr_canvas.getContext("2d");
+        let ctx = curr_canvas.getContext("2d");
         ctx.font = textsize +" Arial";
         ctx.fillStyle = textcolor;
         ctx.fillText(display_text, text_loc[0], text_loc[1]);
@@ -451,7 +454,7 @@ class game{
                 }
                 else{
                     let sound_no = Math.floor(addscore/10);
-                    console.log(sound_no);
+                    // console.log(sound_no);
                     this.win_sound[sound_no].play();
                 }
                 // else{
@@ -605,6 +608,7 @@ class game{
             this.cur_obstacle_id += 1;
             var new_obstacle = new obstacles(gameshape, this.current_time, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id, this.min_obstacles, this.max_obstacles);
             new_obstacle.setObstacleParams(this.game_obstacle_seeds[this.cur_obstacle_id-1]);   // Set obstacle params to those from seed JSON
+
             this.curr_obstacle.push(new_obstacle);
         }
 
@@ -613,6 +617,7 @@ class game{
     // Draw a circle on the canvas
     drawCircle(marker){
         ctx.beginPath();
+        // console.log('marker', marker.shape, marker.loc)
         ctx.arc(marker.loc[0], marker.loc[1], marker.radius, 0, Math.PI*2);
         ctx.fillStyle =  marker.marker_color;
         ctx.fill();

@@ -53,13 +53,13 @@ class obstacles extends marker{
 
     setObstacleParams(newparams){
         this.obstacle_params = newparams;
-        this.x = Math.ceil(this.obstacle_params["x"]*this.shape[1]);
+        this.x = Math.ceil(this.obstacle_params["x"]*this.shape[0]);
         this.velocity = [this.obstacle_params["velocity"]]*this.velocity_scale;//[np.clip(velocity,0.5,1)*this.velocity_scale]
         this.theta = this.obstacle_params["theta"];
         this.original_velocity = this.velocity;
 
         // // print(f'x {x}, velocity {velocity}, theta {theta}, rad {rad}, type {type}')
-        if (this.x > this.shape[1]/2){
+        if (this.x > this.shape[0]/2){
             this.theta = -Math.PI - this.theta;
         }
 
@@ -78,8 +78,9 @@ class obstacles extends marker{
         }
 
         this.velocity = [Math.cos(this.theta)*this.velocity, Math.sin(this.theta)*this.velocity];
-        this.loc = [this.x, (this.shape[1] - this.y)];
+        this.loc = [this.x, (this.shape[1] - 0*this.y)];
         this.new_marker_no = this.obstacle_params["new_marker_no"];
+        
     }
 
 

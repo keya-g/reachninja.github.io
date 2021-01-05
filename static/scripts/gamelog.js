@@ -22,6 +22,8 @@ class gamelog{
         this.logLineArray = [""];   
         this.frame_id = 0;
         this.logname = this.player_folder + '_Attempt' + this.attempt + '_' + this.game_id;
+        console.log(this.logname);
+
         // this.image_log_folder = "{this.player_folder}/Game_{this.attempt}_{this.game_id}"
         // this.savefolder = this.image_log_folder
         // os.makedirs(this.image_log_folder, exist_ok = true)

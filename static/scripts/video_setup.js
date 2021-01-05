@@ -55,6 +55,8 @@ var mom = null;
 
 var game_object = null;
 
+var red_width = 600;    // This is the reduction in image size done to speed up blob tracking; higher value => more pixels to search, higher accuracy but lower speed; and vice versa
+
 
 
 cv['onRuntimeInitialized']=()=>{
@@ -79,12 +81,24 @@ function processVideo() {
     // cv.imshow('gameCanvas', src);
         // console.log(cap.get(CAP_PROP_FRAME_WIDTH ));
     cv.flip(src, src, 1);
+
+    
+    new_width = red_width;  // This value is set above
+    new_height = actual_height*red_width/actual_width; //actual_height*perc_red/100;
+    cv.resize(src, src, new cv.Size(new_width,new_height), 0, 0, cv.INTER_LINEAR);
+
+
     var center = new cv.Point(pointcX, pointcY);
-    dst = src.clone();
-    cv.circle(dst, center, 1, [200,255,0,255], 8);
+    let dst = src.clone();
+    // cv.circle(dst, center, 1, [200,255,0,255], 15);
     cv.cvtColor(src, hsv, cv.COLOR_RGB2HSV);
     [dst, center, ...rest] = blobdetect(src, dst, hsv);
-    
+
+    cv.resize(dst, dst, new cv.Size(actual_width,actual_height), 0, 0, cv.INTER_LINEAR);
+
+    // arraypt = scaleArray(arraypt, window_width/red_width);
+    // arraypt[0] = window_width - arraypt[0];
+    // console.log(center)
     cv.imshow('gameCanvas', dst);
     src.delete();
     dst.delete();
@@ -229,20 +243,20 @@ function keypressed(e){
 function resetDisplaySize(){
     window_width = window.innerWidth;
     window_height = window.innerHeight;
-    display_height = window_height - 10;
+    display_height = window_height - 50;
     var video_ratio = actual_width/actual_height;
     display_width = Math.round(display_height*video_ratio);
     var style_line = "z-index:1; width: " + display_width   + "px; height:" + display_height + "px;";
     video.height = display_height; video.width = display_width;
     gameCanvas.setAttribute("style", style_line);
-    style_line = "z-index:1; width: " + (window_width - display_width)/2   + "px; height:" + display_height + "px;";
+    style_line = "z-index:1; width: " + (window_width - display_width - 32)/2   + "px; height:" + display_height + "px;";
     lcanvas.setAttribute("style", style_line);
     rcanvas.setAttribute("style", style_line);
-    gameshape = [display_width, display_height];
+    gameshape = [actual_width, actual_height];
     // style_line = "z-index:2; position:absolute; top:" +   + "; left:"  +  ;
     // sbutton.setAttribute("style",style_line);
     with(sbutton.style) {
-        var val = ((window_width - display_width)/4 - sbutton.clientWidth/2);
+        let val = ((window_width - display_width)/4 - sbutton.clientWidth/2);
         left = val + "px" ;
         // console.log(sbutton.clientHeight, left);
         val = (display_height/2 - sbutton.clientHeight/2);
