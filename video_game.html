@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<head>
+    <meta charset="utf-8" />
+    <title>Reach Ninja Webcam Version</title>
+    <style>
+        .box {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<audio id="win1">   
+<source src="static/audio/pop1.wav" />   
+</audio>   
+
+<audio id="win2">   
+<source src="static/audio/pop4.wav" />   
+</audio>   
+
+<audio id="win3">   
+<source src="static/audio/pop6.wav" />   
+</audio>   
+
+<audio id="err">   
+<source src="static/audio/boom1.wav" />   
+</audio>   
+
+<input id="PlayerID" type="hidden" value={{player_id}} />
+<input id="PlayerGroup" type="hidden" value={{player_group}} />
+
+<!-- <div class = box> -->
+<input id="startbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Start Game"/>
+<canvas id="leftCanvas" width="200" height="480"
+style="z-index:1">
+Your browser does not support the canvas element.
+</canvas>
+<canvas id="gameCanvas" style="z-index:1">
+    Your browser does not support the canvas element.
+</canvas>
+
+<canvas id="rightCanvas" width="200" height="480"
+style="z-index:1">
+Your browser does not support the canvas element.
+</canvas>
+</div>
+
+<div style="display: none; height: 10px;">
+<video id="videoInput"> <!--  width="320" height="240" controls> -->
+  Your browser does not support the video tag.
+</video>
+<!-- </div> -->
+
+<script type="text/javascript">
+  var game_player_id = document.getElementById("PlayerID").value;
+  var game_player_group = document.getElementById("PlayerGroup").value;
+  console.log({game_player_id}, {game_player_group});
+</script>
+
+<script type="text/javascript" src="static/scripts/opencv.js"></script>
+<script type="text/javascript" src="static/scripts/background.js"></script>
+ <!-- Always the first script to be called -->
+<script type="text/javascript" src="static/scripts/marker.js"></script>
+<script type="text/javascript" src="static/scripts/obstacles.js"></script>
+<script type="text/javascript" src="static/scripts/player.js"></script>
+<script type="text/javascript" src="static/scripts/gamelog.js"></script>
+<script type="text/javascript" src="static/scripts/game.js"></script>
+<script type="text/javascript" src="static/scripts/video_setup.js"></script>
+<script type="text/javascript" src="static/scripts/video_main.js"></script>
+
+
+</body>
+</html>
