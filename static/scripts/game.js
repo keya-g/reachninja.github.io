@@ -280,7 +280,7 @@ class game{
             this.saveframe = false;//InPlay      // NEED TO CHANGE THIS BACK TO TRUE TO SAVE IMAGES
             this.updateGameFrame();
             this.updateGamelog();
-            console.log(this.cur_obstacle_id);
+            // console.log(this.cur_obstacle_id);
         }
         else if (this.game_mode == 'InTest'){   // Test has ended, 4 markers have been reached
             this.game_mode = null;
@@ -289,6 +289,7 @@ class game{
             this.sendData();
             this.sendlog = true;
             this.crashed = true;
+            display_start = true;
         }
 
 

@@ -4,6 +4,12 @@
 function main(){
     // openFullscreen()
     let resetcap = false;
+    // if (display_start == true){
+    //     sbutton.style.display = "block";
+    // }
+    // else {
+    //     sbutton.style.display = "none";
+    // }
     if (cv_built == true && streaming){
 
         if (game_object == null){
@@ -42,6 +48,7 @@ function main(){
             setTimeout(rungame, delay);
         }
         else{
+            displayButtons()
             setTimeout(processVideo, delay);
         }
     }

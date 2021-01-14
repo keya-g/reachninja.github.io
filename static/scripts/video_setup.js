@@ -7,12 +7,14 @@ var lcanvas = document.getElementById("leftCanvas");
 var rcanvas = document.getElementById("rightCanvas");
 var sbutton = document.getElementById("startbutton");
 var tbutton = document.getElementById("testbutton");
+var bbutton = document.getElementById("backbutton");
 var elem = document.documentElement;
 document.addEventListener("mousemove", mouseMoveHandler, false);
 document.addEventListener("mousedown", mouseDownHandler, false);
 elem.addEventListener('keypress', keypressed);
 sbutton.addEventListener("click", startButtonHandler);
-testbutton.addEventListener("click", testButtonHandler);
+tbutton.addEventListener("click", testButtonHandler);
+bbutton.addEventListener("click", backButtonHandler);
 
 // var gameshape = [gameCanvas.height, gameCanvas.width]
 // var game_object = new game();
@@ -25,7 +27,7 @@ var display_width = window.innerWidth;
 var display_height = window.innerHeight;
 var gameshape = null;
 var tracking_type = "Video";
-
+var display_start = false;
 
 navigator.mediaDevices.getUserMedia({ video: true, audio: false })
 
@@ -261,8 +263,25 @@ function resetDisplaySize(){
         let val = ((window_width - display_width)/4 - sbutton.clientWidth/2);
         left = val + "px" ;
         // console.log(sbutton.clientHeight, left);
+        val = (display_height/2 - sbutton.clientHeight*4/2);
+        top = val + "px";
+    }
+    with(tbutton.style) {
+        let val = ((window_width - display_width)/4 - sbutton.clientWidth/2);
+        left = val + "px" ;
+        // console.log(sbutton.clientHeight, left);
         val = (display_height/2 - sbutton.clientHeight/2);
         top = val + "px";
+    }
+    with(bbutton.style) {
+        let val = ((window_width - display_width)/4 - sbutton.clientWidth/2);
+        left = val + "px" ;
+        // console.log(sbutton.clientHeight, left);
+        val = (display_height/2 - sbutton.clientHeight/2);
+        top = val + "px";
+    }
+    if (display_start == false){
+        sbutton.style.display = "none";
     }
 }
 
@@ -270,8 +289,9 @@ function startButtonHandler(){
     // openFullscreen();
     if (game_object != null){
         game_object.game_mode = 'StartPlay';
-        
-        
+        bbutton.style.display = "none";
+        sbutton.style.display = "none";
+        tbutton.style.display = "none";
     }
 }
 
@@ -279,7 +299,25 @@ function testButtonHandler(){
     if (game_object != null){
         game_object.game_mode = "StartTest";
         game_object.starttest();
+        bbutton.style.display = "block";
+        sbutton.style.display = "none";
+        tbutton.style.display = "none";
     }
 }
 
+function backButtonHandler(){
+    // display_start = false;
+    game_object.game_mode = null;
+    console.log("Force quit");
+}
+
+function displayButtons(){
+    clearCanvas(scoreCanvas);  
+    clearCanvas(timeCanvas);  
+    tbutton.style.display = "block";
+    if (display_start == true){
+        sbutton.style.display = "block";
+    }
+    bbutton.style.display = "none";
+}
 
