@@ -46,9 +46,10 @@ class obstacles extends marker{
         if (Math.random() < exploding_perc){
             this.setExplodingObstacle();
         }
-        else{
+        else if (this.game_mode != "InTest"){
             this.setRegularObstacle();
         }
+
     }
 
     setObstacleParams(newparams){

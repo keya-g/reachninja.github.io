@@ -84,6 +84,29 @@ class game{
             this.stationary = true;
         }
     }
+
+    initializeTestGame(){
+        this.exploding_perc = 0;//this.game_params["exploding_perc"];
+        this.max_unobs_time = 0; //this.game_params["max_unobs_time"];
+        this.max_obs_time = 1; // this.game_params["max_obs_time"];
+        this.acceleration = [0,0]; // this.game_params["acc]"]];
+        this.velocity_min = 0; //this.game_params["vel_min"];
+        this.velocity_max = 0; //this.game_params["vel_max"];
+        this.theta_max = 0; //this.game_params["theta_max"];
+        this.theta_min = 0; //this.game_params["theta_min"];
+        this.min_obstacles = 1; //this.game_params["min_obstacles"];
+        this.max_obstacles = 1; //this.game_params["max_obstacles"];
+        this.damping = 0; //this.game_params["damping"]; // 0.5 // -0.5
+        var scale_mat = [[1,0],[0,1]];
+        this.damping_mat = scaleMatrix(scale_mat,this.damping);
+        // this.damping_mat = this.damping*np.array(((-1, -1),(-1, 1)))
+        this.mirror = 0; //this.game_params["mirror"];
+        this.magnetic_coef = 0; //this.game_params["magnetic_coef"];
+        
+        if (this.velocity_max == this.velocity_min && this.velocity_max == 0){
+            this.stationary = true;
+        }
+    }
     
     resetMagneticCoef(magnetic_coef){
         this.magnetic_coef = magnetic_coef;
@@ -177,102 +200,104 @@ class game{
         
         
     }
-        // console.log(t_old);
-        // for (var t = 0; t < this.play_time;){
-        //     t = getTimeS() - start_time;
-        //     if (Math.ceil(t) != Math.ceil(t_old)){
-        //         console.log(Math.ceil(t_old));
-        //     }
-        //     t_old = t;
 
-        //     // for event in pygame.event.get():
-        //     //     if event.type == pygame.QUIT:
-        //     //         this.crashed = true
-        //     //     else if event.type == pygame.KEYDOWN && event.key == pygame.K_q:
-        //     //         this.crashed = true
-        //         // else if event.type == pygame.KEYDOWN && event.key == pygame.K_s:
-        //         //     this.game_mode = 'StartPlay'
-        //         // else if event.type == pygame.KEYDOWN && event.key == pygame.K_c:
-        //         //     this.game_mode = 'Calibrate'
-        //         //     this.current_time = getTimeS()  
-        //         // else if event.type == pygame.KEYDOWN && event.key == pygame.K_t:
-        //         //     this.game_mode = 'Test'
-        //         // else if event.type == pygame.KEYDOWN && event.key == pygame.K_e:
-        //         //     this.game_mode = null
-        //         //     this.player.start_time = -1
-        //         //     // this.player.attempt -= 1 // TO CHANGE
-        //         //     console.log('Exiting... ')
+    starttest(){
+        var game_group = 0; //2;
+        this.current_game_type = "Test";
+        this.crashed = false;
+        
 
-        //         // else if event.type == pygame.MOUSEBUTTONDOWN:
-        //         //     if this.start_button.collidepoint(event.pos):
-        //         //         this.game_mode = 'StartPlay'
-        //         //     else if this.calibrate_button.collidepoint(event.pos):
-        //         //         this.game_mode = 'Calibrate'
-        //         //         this.current_time = getTimeS()  
-        //         //     else if this.test_button.collidepoint(event.pos):
-        //         //         this.game_mode = 'Test'
-        //         //     else:
-        //         //         this.pickColor()
-                
-        //     // if (this.game_mode == null){
-        //     //     this.displayDefault();
-        //     // }
+        var player_id = game_player_id; //3;
+        console.log(game_player_id);
+        console.log('in test ', player_id, game_group)
+        // var gameshape = [gameCanvas.width, gameCanvas.height];
+        console.log(gameshape);
+        this.player = new player(gameshape, this.damping, this.mirror, player_id, 0, 1);
+        
+        
+        this.init_line = "Screen: " + gameshape;
+        // this.gamelog = Gamelog(this.player, this.game_id)
+        this.gamelog = new gamelog(this.player, this.game_id);
+        
+        
+    }
+    run(){
+        this.sendlog = false;
 
-        //     // else if (this.game_mode == 'StartPlay' && this.player.start_time == -1){
-        /////////////////////////
-        run(){
-            this.sendlog = false;
-            // console.log(this.game_mode);
-            // console.log(this.player.id);
-            if (this.game_mode == 'StartPlay' && this.player.start_time == -1){
-                // Check for more than 40 attempts
-                if (this.player.attempt >= 40){
-                    console.log('Quitting... ');
-                    this.crashed = true;
-                }
-                else{
-                    console.log('Starting... ');
-                    this.player.setStartTime();
-                    this.player.last_time = getTimeS();
-                    this.game_type = this.current_game_type;
-                    this.frame_id = 1;
-                    this.check_targets = false;
-                    this.current_time = getTimeS();
-                    this.initializeNewGame();
-                    this.tracking_type = tracking_type; // Mouse or Video
-                    this.intervention = 0;              // This is to signify type of game curriculum, right now we only have one curriculum running, so set to 0
-                    this.gamelog.newGameLog(this.player.attempt, this.init_line)
-                }
-            }
-
-            else if (this.game_mode == 'InPlay' && (getTimeS() - this.player.start_time) <= this.play_time){
-                this.current_time = getTimeS();
-                this.saveframe = false;//InPlay      // NEED TO CHANGE THIS BACK TO TRUE TO SAVE IMAGES
-                this.updateGameFrame();
-                this.updateGamelog();
-            }
-                
-            else if (this.game_mode == 'InPlay'){
-                this.game_mode = null;
-                this.saveframe = false;
-                // pygame.time.delay(2000);
-                // setTimeout(() => {
-                //   console.log("Waited 2000 ms");
-                // }, 2000);
-                this.player.setStartTime();
-                // console.log(this.gamelog.datalog);
-                this.sendData();
-                this.sendlog = true;
+        if (this.game_mode == 'StartPlay' && this.player.start_time == -1){ 
+            // Check for more than 40 attempts
+            if (this.player.attempt >= 40){ // Testing for maximum attempts (40)
+                console.log('Quitting... ');
                 this.crashed = true;
             }
-
-        if (this.crashed == true){
-            if (confirm("Game ended! Restart?")){
-                this.game_mode = 'StartPlay';
-                // this.gamelog.newGameLog = null;
-                this.player.start_time = -1;
-                this.crashed = false;
+            else{   // Starting test
+                console.log('Starting... ');
+                this.player.setStartTime();
+                this.player.last_time = getTimeS();
+                this.game_type = this.current_game_type;
+                this.frame_id = 1;
+                this.check_targets = false;
+                this.current_time = getTimeS();
+                this.initializeNewGame();
+                this.tracking_type = tracking_type; // Mouse or Video
+                this.intervention = 0;              // This is to signify type of game curriculum, right now we only have one curriculum running, so set to 0
+                this.gamelog.newGameLog(this.player.attempt, this.init_line)
             }
+        }
+
+        else if (this.game_mode == 'InPlay' && (getTimeS() - this.player.start_time) <= this.play_time){    // Checking if 40s have been completed in play
+            this.current_time = getTimeS();
+            this.saveframe = false;//InPlay      // NEED TO CHANGE THIS BACK TO TRUE TO SAVE IMAGES
+            this.updateGameFrame();
+            this.updateGamelog();
+        }
+            
+        else if (this.game_mode == 'InPlay'){   // After 40 seconds have been completed in play
+            this.game_mode = null;
+            this.saveframe = false;
+            this.player.setStartTime();
+            this.sendData();
+            this.sendlog = true;
+            this.crashed = true;
+        }
+
+        else if(this.game_mode == "StartTest"){ // Starting test
+            console.log('Starting test... ');
+            this.player.setStartTime();
+            this.player.last_time = getTimeS();
+            this.game_type = this.current_game_type;
+            this.frame_id = 1;
+            this.check_targets = false;
+            this.current_time = getTimeS();
+            this.initializeNewTest();
+            this.tracking_type = tracking_type; // Mouse or Video
+            this.intervention = -1;              // This is to signify type of run as testing (-1)
+            this.gamelog.newGameLog(this.player.attempt, this.init_line);
+            console.log(this.game_mode, this.cur_obstacle_id);
+        }
+        else if (this.game_mode == 'InTest' && this.cur_obstacle_id <= 4){  // Test is running, less than 4 markers have been reached
+            this.current_time = getTimeS();
+            this.saveframe = false;//InPlay      // NEED TO CHANGE THIS BACK TO TRUE TO SAVE IMAGES
+            this.updateGameFrame();
+            this.updateGamelog();
+            console.log(this.cur_obstacle_id);
+        }
+        else if (this.game_mode == 'InTest'){   // Test has ended, 4 markers have been reached
+            this.game_mode = null;
+            this.saveframe = false;
+            this.player.setStartTime();
+            this.sendData();
+            this.sendlog = true;
+            this.crashed = true;
+        }
+
+
+        // Checking if game or test have ended.
+        if (this.crashed == true){
+            alert("Returning to landing page")
+            this.game_mode = null; //'StartPlay';
+            this.player.start_time = -1;
+            this.crashed = false;
         }
     }
 
@@ -291,7 +316,10 @@ class game{
             // console.log(this.curr_obstacle[c].shape, this.curr_obstacle[c].loc);
         }
         
-        
+
+        if (this.game_mode == "InTest"){
+            return;
+        }
         // Redraw score canvas (left)
         clearCanvas(scoreCanvas);   
         var score_line = "Score:";
@@ -444,6 +472,10 @@ class game{
             if (o.checkCollision(this.player, 1)){ 
                 // console.log('Collided! obstacle id ', o.obstacle_id)
                 var addscore = this.updateScore(o);
+                if (this.game_mode == "InTest"){
+                    addscore = 1;
+                }
+
                 resetobstacle_count = true;
                 new_marker_no = o.new_marker_no;
                 this.display_score = 1;
@@ -490,11 +522,17 @@ class game{
         }
         this.curr_obstacle = new_obstacle; // Effectively removed collided || out of frame markers
 
+        
+
         if (resetobstacle_count){
             // Resetting obstacle count. 
             // If this.check_targets is still false, the new count will necessarily be 1 more than the last length
             // Otherwise, the new count will be new_marker_no - from seeds
             this.newobstacle_count(new_marker_no, this.curr_obstacle);
+        }
+
+        if (this.game_mode == "InTest"){
+            this.obstacle_count = 1;
         }
 
         // console.log('Here before while');
@@ -505,7 +543,14 @@ class game{
 
             // Creating a new obstacle
             var new_obstacle = new obstacles(gameshape, ctime, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id);
-            new_obstacle.setObstacleParams(this.game_obstacle_seeds[this.cur_obstacle_id-1]);   // Setting obstacle values to seeds || This can be commented if not using seeds, game will be random
+            
+            if (this.game_mode == "InPlay"){
+                new_obstacle.setObstacleParams(this.game_obstacle_seeds[this.cur_obstacle_id-1]);   // Setting obstacle values to seeds || This can be commented if not using seeds, game will be random
+            }
+            else if(this.game_mode == "InTest"){
+                new_obstacle.marker_color = "green";
+                new_obstacle.loc[1] = Math.ceil(Math.random()*gameshape[1]); 
+            }
             this.curr_obstacle.push(new_obstacle);
 
             if (this.curr_obstacle[this.curr_obstacle.length-1].obstacle_type == 'Regular'){
@@ -560,6 +605,12 @@ class game{
     updateScore(marker){
         var addscore = 0;
         // console.log('Adding score')
+
+        if (this.game_mode == "InTest"){
+            this.player.score = this.player.score + 1;
+            return 1;   // Add 1 in the test case
+        }
+
         if (marker.obstacle_type == 'Exploding'){
             addscore = -10;
         }
@@ -568,7 +619,7 @@ class game{
             var velocity_effect = (marker.original_velocity/marker.velocity_scale)/(this.velocity_max);
             // console.log('size ', size_effect, ' velocity ', velocity_effect);
             addscore = 10 + Math.ceil(10*size_effect) + Math.ceil(10*velocity_effect);
-            if (addscore > 30){
+            if (addscore > 30 || addscore == undefined){
                 console.log(Math.ceil(10*size_effect), Math.ceil(10*velocity_effect))
             }
         }
@@ -586,6 +637,7 @@ class game{
         this.display_score = 0;
         this.old_score = 0;
         this.current_time = getTimeS();
+
         this.player.newGameInit(this.current_time);
         
         console.log('Attempt' + this.player.attempt);
@@ -614,6 +666,33 @@ class game{
 
     }
 
+    initializeNewTest(){
+        this.gamelog.game_type = "Test";
+        drawBG()
+        this.game_mode = 'InTest';
+        this.display_score = 0;
+        this.old_score = 0;
+        this.current_time = getTimeS();
+        this.player.newGameInit(this.current_time);
+        this.player.attempt = this.player.attempt - 1;  // Resetting attempt number; should not increase because of test
+        this.player.max_unobs_time = 0;
+
+        this.initializeTestGame();
+        this.check_targets = false;
+        this.cur_obstacle_id = 0;
+        this.curr_obstacle =  new Array();
+        this.obstacle_count = 1;
+        for (var ob_ctr = 0; ob_ctr < this.obstacle_count; ob_ctr ++){
+            this.cur_obstacle_id += 1;
+            var new_obstacle = new obstacles(gameshape, this.current_time, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id, this.min_obstacles, this.max_obstacles);
+            new_obstacle.loc[1] = Math.ceil(Math.random()*gameCanvas.height); // Assigning a random height
+            new_obstacle.marker_color = "green";
+            this.curr_obstacle.push(new_obstacle);
+        }
+        console.log(this.cur_obstacle_id);
+
+    }
+
     // Draw a circle on the canvas
     drawCircle(marker){
         ctx.beginPath();
@@ -631,6 +710,12 @@ class game{
         this.gamelog.writeLogLine();
         this.gamelog.clearLogLine();
     }
+
+    // testGame(){
+        
+        
+
+    // }
 
     // calibrateGame():
     //     call_time = getTimeS()

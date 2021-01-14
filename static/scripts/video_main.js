@@ -36,6 +36,9 @@ function main(){
         // console.log(game_object.game_mode);
         // console.log(gameshape);
         if (game_object.game_mode != null){
+            if (game_object.player == undefined){
+                game_object.startrun();
+            }
             setTimeout(rungame, delay);
         }
         else{

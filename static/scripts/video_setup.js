@@ -6,11 +6,13 @@ var video = document.getElementById("videoInput"); // video is the id of video t
 var lcanvas = document.getElementById("leftCanvas");
 var rcanvas = document.getElementById("rightCanvas");
 var sbutton = document.getElementById("startbutton");
+var tbutton = document.getElementById("testbutton");
 var elem = document.documentElement;
 document.addEventListener("mousemove", mouseMoveHandler, false);
 document.addEventListener("mousedown", mouseDownHandler, false);
 elem.addEventListener('keypress', keypressed);
 sbutton.addEventListener("click", startButtonHandler);
+testbutton.addEventListener("click", testButtonHandler);
 
 // var gameshape = [gameCanvas.height, gameCanvas.width]
 // var game_object = new game();
@@ -268,8 +270,15 @@ function startButtonHandler(){
     // openFullscreen();
     if (game_object != null){
         game_object.game_mode = 'StartPlay';
-        game_object.startrun();
         
+        
+    }
+}
+
+function testButtonHandler(){
+    if (game_object != null){
+        game_object.game_mode = "StartTest";
+        game_object.starttest();
     }
 }
 
