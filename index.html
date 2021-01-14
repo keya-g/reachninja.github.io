@@ -30,6 +30,9 @@
     </style>
 </head>
 <body>
+<audio id="win1">   
+  <source src="static/audio/pop1.wav" />   
+</audio>   
 
 <div class = box>
   <div class="btn-group">
@@ -37,6 +40,16 @@
     <button id="webcam_game">Webcam Version</button>
   </div>
 </div>
+
+<button id="audioallowed" onClick="allowAudio()">Allow audio?</button>
+<script type="text/javascript">
+  function allowAudio(){
+    let sound = document.getElementById("win1");
+    sound.play();
+  }
+
+</script>
+
 
 <script type="text/javascript">
   document.getElementById("mouse_game").onclick = function(){
