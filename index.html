@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <head>
     <meta charset="utf-8" />
     <title>Reach Ninja Home Page</title>
@@ -31,33 +30,21 @@
     </style>
 </head>
 <body>
-<audio id="win1">   
-  <source src="static/audio/pop1.wav" />   
-</audio>   
-  <form method="post" action="/">
-        <input type="text" name="PlayerID" placeholder="Your ID" />
-        <input type="text" name="PlayerGroup" placeholder="Your Group" />
 
-        <!-- <input type="submit" value="Encrypt" name="Encrypt"/> -->
-        <div class = box>
-          <div class="btn-group">
-            <button type="submit" value="mouse_game" name="mouse_game">Mouse Version</button>
-            <button type="submit" value="video_game" name="video_game">Webcam Version</button>
-          </div>
-        </div>
+<div class = box>
+  <div class="btn-group">
+    <button id="mouse_game">Mouse Version</button>
+    <button id="webcam_game">Webcam Version</button>
+  </div>
+</div>
 
-        
-
-        <!-- <input type="submit" value="Decrypt" name="Decrypt" /> -->
-
-  </form>
-<button id="audioallowed" onClick="allowAudio()">Allow audio?</button>
 <script type="text/javascript">
-  function allowAudio(){
-    let sound = document.getElementById("win1");
-    sound.play();
+  document.getElementById("mouse_game").onclick = function(){
+    location.href = "https://keya-g.github.io/reachninja.github.io/mouse_game";
   }
-
+  document.getElementById("webcam_game").onclick = function(){
+    location.href = "https://keya-g.github.io/reachninja.github.io/video_game";
+  }
 </script>
 
 
