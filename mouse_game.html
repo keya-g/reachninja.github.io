@@ -11,13 +11,29 @@
           padding: 10px;
         }
     </style>
-    <style type="text/css">
+    <!-- <style type="text/css">
          * {
        cursor: none;
          }
-    </style>
+    </style> -->
 </head>
 <body>
+
+  <audio id="win1">   
+<source src="static/audio/pop1.wav" />   
+</audio>   
+
+<audio id="win2">   
+<source src="static/audio/pop4.wav" />   
+</audio>   
+
+<audio id="win3">   
+<source src="static/audio/pop6.wav" />   
+</audio>   
+
+<audio id="err">   
+<source src="static/audio/boom1.wav" />   
+</audio>   
 
 <!-- <canvas id="scoreCanvas" width="20" height="640"></canvas>
 <canvas id="gameCanvas" width="960" height="640"></canvas>
@@ -39,6 +55,15 @@ style="z-index:1">
 Your browser does not support the canvas element.
 </canvas>
 </div>
+<button id="audioallowed" onClick="allowAudio()" font-size=16px>Allow audio?</button>
+<script type="text/javascript">
+  document.getElementById("gameCanvas").style.cursor = "none";
+  function allowAudio(){
+    let sound = document.getElementById("win1");
+    sound.play();
+  }
+
+</script>
 
 <script src="original_scripts/background.js"></script> <!-- Always the first script to be called -->
 <script src="original_scripts/marker.js"></script>
