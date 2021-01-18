@@ -311,12 +311,19 @@ function backButtonHandler(){
     console.log("Force quit");
 }
 
-function displayButtons(){
+function displayButtons(pause_time){
     clearCanvas(scoreCanvas);  
     clearCanvas(timeCanvas);  
     tbutton.style.display = "block";
     if (display_start == true){
         sbutton.style.display = "block";
+        if (getTimeS() - game_object.end_time < pause_time){
+            sbutton.disabled = true;
+            console.log('Disabled')
+        }
+        else{
+            sbutton.disabled = false;
+        }
     }
     bbutton.style.display = "none";
 }

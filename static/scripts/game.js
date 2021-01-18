@@ -51,6 +51,7 @@ class game{
         this.stationary = false;
         this.test_FR = 0;
         this.sendlog = false;
+        this.end_time = -1;
     }
 
     resetDamping(damping = 0){
@@ -271,6 +272,7 @@ class game{
             this.sendData();
             this.sendlog = true;
             this.crashed = true;
+            this.end_time = getTimeS();
         }
 
         else if(this.game_mode == "StartTest"){ // Starting test

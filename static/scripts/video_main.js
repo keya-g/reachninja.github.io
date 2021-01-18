@@ -48,7 +48,7 @@ function main(){
             setTimeout(rungame, delay);
         }
         else{
-            displayButtons()
+            displayButtons(5)   // The number represents how long the start game button will remain inactive between attempts - forcing a break
             setTimeout(processVideo, delay);
         }
     }

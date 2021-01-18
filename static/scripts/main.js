@@ -7,8 +7,9 @@ var win2 = document.getElementById('win2');
 var win3 = document.getElementById('win3');
 var err = document.getElementById('err');
 
-
+gameCanvas.height = window.innerHeight;
 var gameshape = [gameCanvas.width, gameCanvas.height];
+
 ctime = getTimeS();
 damping = 0;
 mirror = false;
