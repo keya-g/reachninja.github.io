@@ -253,16 +253,25 @@ class game{
         // Redraw score canvas (left)
         clearCanvas(scoreCanvas);   
         var score_line = "Score:";
-        this.writeOnCanvas(scoreCanvas, score_line, [scoreCanvas.width/2-75, scoreCanvas.height/2-50], "gray", "50px");
+        var text_size = "50px";
+
+        // if (this.tracking_type = "Video"){
+        //     var text_size = "50px";
+        // }
+        // else{
+        //     var text_size = "30px";
+        // }
+
+        this.writeOnCanvas(scoreCanvas, score_line, [scoreCanvas.width/2-75, scoreCanvas.height/2-50], "gray", text_size);
         score_line = this.player.score;
-        this.writeOnCanvas(scoreCanvas, score_line, [scoreCanvas.width/2-20, scoreCanvas.height/2+50], "gray", "50px");
+        this.writeOnCanvas(scoreCanvas, score_line, [scoreCanvas.width/2-20, scoreCanvas.height/2+50], "gray", text_size);
 
         // Redraw time cnvas (right)        
         clearCanvas(timeCanvas);
         var time_line = "Time:";
-        this.writeOnCanvas(timeCanvas, time_line, [timeCanvas.width/2-75, timeCanvas.height/2-50], "gray", "50px");
+        this.writeOnCanvas(timeCanvas, time_line, [timeCanvas.width/2-75, timeCanvas.height/2-50], "gray", text_size);
         time_line = Math.ceil(this.play_time - (this.curr_time - this.player.start_time));
-        this.writeOnCanvas(timeCanvas, time_line, [timeCanvas.width/2-20, timeCanvas.height/2+50], "gray", "50px");
+        this.writeOnCanvas(timeCanvas, time_line, [timeCanvas.width/2-20, timeCanvas.height/2+50], "gray", text_size);
 
         if (tracking_type == "Video"){  // Video framerate is slower
             var disp_frames = 10;   

@@ -223,6 +223,16 @@ class game{
     }
     run(){
         this.sendlog = false;
+        if (this.game_mode == "InWait"){
+            if (this.wait_start == null){
+                this.wait_start = getTimeS();
+            }
+            var wait_end = this.waitGame(5);
+            if (wait_end){
+                this.game_mode = "StartPlay";
+                this.wait_start = null;
+            }
+        }
 
         if (this.game_mode == 'StartPlay' && this.player.start_time == -1){ 
             // Check for more than 40 attempts
@@ -232,6 +242,7 @@ class game{
             }
             else{   // Starting test
                 console.log('Starting... ');
+                // if (waiting == 0){
                 this.player.setStartTime();
                 this.player.last_time = getTimeS();
                 this.game_type = this.current_game_type;
@@ -241,7 +252,8 @@ class game{
                 this.initializeNewGame();
                 this.tracking_type = tracking_type; // Mouse or Video
                 this.intervention = 0;              // This is to signify type of game curriculum, right now we only have one curriculum running, so set to 0
-                this.gamelog.newGameLog(this.player.attempt, this.init_line)
+                this.gamelog.newGameLog(this.player.attempt, this.init_line);
+                // }
             }
         }
 
@@ -571,22 +583,43 @@ class game{
         this.upper = upper;// np.array(upper, dtype = "uint8");
     }
 
+    waitGame(wait_dur){
+        drawBG();
+        var msg = "Attempt: " + (this.player.attempt+1);
+        gameCanvas.font = "50px Arial";
+        let m = gameCanvas.getContext("2d").measureText(msg);
+        var text_center = [gameCanvas.width/2 - m.width/2, gameCanvas.height/2 - 50];
+        this.writeOnCanvas(gameCanvas, msg, text_center, "black", "50px");
+        text_center = [gameCanvas.width/2, gameCanvas.height/2 + 50]; 
+        msg = this.wait_time - Math.ceil(getTimeS() - this.wait_start) + 1;
+        this.writeOnCanvas(gameCanvas, msg, text_center, "black", "50px");
+        console.log("Printed", msg);
+        return ((getTimeS() - this.wait_start) >= wait_dur)
+    }
+
     // Wait for game to start - Needs to be updated
-    waitGame(call_time){
-        console.log("in wait time");
-        alert('here');
-        while ((getTimeS() - call_time) < 1 ){ //this.wait_time){
-            // this.game_display.fill([255,255,255])
-            drawBG();
-            console.log(Math.ceil(getTimeS() - call_time));
-            var text_center = [gameCanvas.width/2, gameCanvas.height/2 - 50]; //((this.frame_size_tuple[0]/2) + this.frame_offset,(this.frame_size_tuple[1]/2 - 50))
-            // this.messageDisplay(f"Attempt {this.player.attempt+1}", text_center, this.textcolor["black"])
-            var msg = "Attempt" + (this.player.attempt+1);
-            this.writeOnCanvas(gameCanvas, msg, text_center, "black");
-            text_center = [gameCanvas.width/2, gameCanvas.height/2 + 50]; 
-            msg = this.wait_time - (getTimeS() - call_time);
-            this.writeOnCanvas(gameCanvas, msg, text_center, "black");
+    waitTime(call_time, wait_dur){
+        let last_time = 0;
+        let dif_time = 1;
+        this.game_mode = "Waiting";
+         while ((getTimeS() - call_time) < wait_dur ){
+            if (dif_time >= 1){
+                var text_center = [gameCanvas.width/2, gameCanvas.height/2 - 50]; //((this.frame_size_tuple[0]/2) + this.frame_offset,(this.frame_size_tuple[1]/2 - 50))
+                // this.messageDisplay(f"Attempt {this.player.attempt+1}", text_center, this.textcolor["black"])
+                var msg = "Attempt" + (this.player.attempt+1);
+                this.writeOnCanvas(gameCanvas, msg, text_center, "black", "50px");
+                text_center = [gameCanvas.width/2, gameCanvas.height/2 + 50]; 
+                msg = this.wait_time - Math.ceil(getTimeS() - call_time);
+                this.writeOnCanvas(gameCanvas, msg, text_center, "black", "50px");
+                console.log("Printed", msg);
+                dif_time = Math.ceil(getTimeS() - call_time) - last_time;
+                last_time = Math.ceil(getTimeS() - call_time);
+            }
+            // console.log('completed loop')
+
         }
+        this.game_mode = "StartPlay"
+        return 0;
     }
 
     // Resetting obstacle count if an obstacle has left the screen

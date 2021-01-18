@@ -111,7 +111,7 @@ function rungame(){
     game_object.player.resetMovementParams(newplayer);
     newplayer = game_object.player;
     if (game_object.game_mode == null){
-        game_object.game_mode = 'StartPlay';
+        game_object.game_mode = 'InWait';
     }
 
     game_object.run();

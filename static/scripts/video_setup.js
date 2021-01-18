@@ -288,7 +288,7 @@ function resetDisplaySize(){
 function startButtonHandler(){
     // openFullscreen();
     if (game_object != null){
-        game_object.game_mode = 'StartPlay';
+        game_object.game_mode = 'InWait';
         bbutton.style.display = "none";
         sbutton.style.display = "none";
         tbutton.style.display = "none";
