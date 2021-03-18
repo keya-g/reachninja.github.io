@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Reach Ninja Webcam Version</title>
+    <style>
+        .box {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- <canvas id="scoreCanvas" width="20" height="640"></canvas>
+<canvas id="gameCanvas" width="960" height="640"></canvas>
+<canvas id="timeCanvas" width="20" height="640"></canvas> -->
+<audio id="win1">   
+<source src="static/audio/pop1.wav" />   
+</audio>   
+
+<audio id="win2">   
+<source src="static/audio/pop4.wav" />   
+</audio>   
+
+<audio id="win3">   
+<source src="static/audio/pop6.wav" />   
+</audio>   
+
+<audio id="err">   
+<source src="static/audio/boom1.wav" />   
+</audio>   
+
+<div class = box>
+<input id="startbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Start Game"/>
+
+
+<canvas id="leftCanvas_v" width="200" height="480"
+style="z-index:1">
+Your browser does not support the canvas element.
+</canvas>
+<canvas id="gameCanvas_v" style="z-index:1">
+    Your browser does not support the canvas element.
+</canvas>
+
+<canvas id="rightCanvas_v" width="200" height="480"
+style="z-index:1">
+Your browser does not support the canvas element.
+</canvas>
+
+<canvas id="leftCanvas" width="200" height="480"
+style="z-index:1">
+Your browser does not support the canvas element.
+</canvas>
+<canvas id="gameCanvas" style="z-index:1">
+    Your browser does not support the canvas element.
+</canvas>
+
+<canvas id="rightCanvas" width="200" height="480"
+style="z-index:1">
+Your browser does not support the canvas element.
+</canvas>
+</div>
+
+<div style="display: none; height: 10px;">
+<video id="videoInput"> <!--  width="320" height="240" controls> -->
+  Your browser does not support the video tag.
+</video>
+
+
+</div>
+
+
+<button id="audioallowed" onClick="allowAudio()">Allow audio?</button>
+<script type="text/javascript">
+  function allowAudio(){
+    let sound = document.getElementById("win1");
+    sound.play();
+  }
+
+</script>
+
+<script type="text/javascript">
+alert("Please allow webcam access. Once the video has loaded, hold up the tracking object (tennis ball) and click on it on screen. The blue dot should track the object. Refresh if you need to see instructions again.");
+</script>
+
+<script src="original_scripts/opencv.js" type="text/javascript"></script>
+<script src="original_scripts/background.js"></script> <!-- Always the first script to be called -->
+<script src="original_scripts/marker.js"></script>
+<script src="original_scripts/obstacles.js"></script>
+<script src="original_scripts/player.js"></script>
+<script src="original_scripts/game_v.js"></script>
+<script src="original_scripts/video_setup_v.js"></script>
+<script src="original_scripts/video_main_v.js"></script>
+
+
+</body>
+</html>
