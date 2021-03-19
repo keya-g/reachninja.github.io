@@ -443,8 +443,8 @@ class game{
                     // new_obstacle.velocity[0] = Math.abs(new_obstacle.velocity[0])*Math.sign(this.curr_obstacle[this.curr_obstacle.length-1].original_velocity);
                 }
             }
-            if (this.curr_obstacle.length>=1)
-                console.log(this.curr_obstacle[this.curr_obstacle.length-1].loc[0], new_obstacle.loc[0]);
+            // if (this.curr_obstacle.length>=1)
+            //     console.log(this.curr_obstacle[this.curr_obstacle.length-1].loc[0], new_obstacle.loc[0]);
             this.curr_obstacle.push(new_obstacle);
 
 
@@ -506,7 +506,9 @@ class game{
             addscore = -10;
         }
         else{
-            var size_effect = (marker.max_radius - marker.radius) / (marker.max_radius - marker.min_radius);
+            var den = ((marker.max_radius - marker.min_radius)==0) ? 1 : (marker.max_radius - marker.min_radius);
+            console.log(den);
+            var size_effect = (marker.max_radius - marker.radius) / den;
             var velocity_effect = (marker.original_velocity/marker.velocity_scale)/(this.velocity_max);
             // console.log('size ', size_effect, ' velocity ', velocity_effect);
             addscore = 10 + Math.ceil(10*size_effect) + Math.ceil(10*velocity_effect);
@@ -558,8 +560,17 @@ class game{
             var new_obstacle = new obstacles(gameshape, this.current_time, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id, this.min_obstacles, this.max_obstacles);
             // new_obstacle.setObstacleParams(this.game_obstacle_seeds[this.cur_obstacle_id-1]);   // Set obstacle params to those from seed JSON
 
-            if (this.game_type == "Grouped"){
-                console.log(new_obstacle.loc, this.curr_obstacle[-1].loc)
+            if (((this.game_type == "Grouped") || (this.game_type == "Waves"))){
+                // new_obstacle.loc[0] = clamp(new_obstacle.loc[0], gameshape[0]/4, 3*gameshape[0]/4);
+                if (this.curr_obstacle.length>=1){
+                    new_obstacle.loc[0] = this.curr_obstacle[this.curr_obstacle.length-1].loc[0] + Math.random() * (0) - 0;
+                    // new_obstacle.loc[0] = clamp(new_obstacle.loc[0], gameshape[0]/4, 3*gameshape[0]/4);
+                    if (new_obstacle.loc[0] >= gameshape[0]/2)
+                        new_obstacle.velocity[0] = Math.abs(new_obstacle.velocity[0])*-1;
+                    else
+                        new_obstacle.velocity[0] = Math.abs(new_obstacle.velocity[0]);
+                    // new_obstacle.velocity[0] = Math.abs(new_obstacle.velocity[0])*Math.sign(this.curr_obstacle[this.curr_obstacle.length-1].original_velocity);
+                }
             }
 
             this.curr_obstacle.push(new_obstacle);
