@@ -39,10 +39,13 @@ class game{
         this.display_score = 0;
         this.old_score = 0;
         this.saveframe = false;
-        this.game_params = {"exploding_perc" : 0.33, "max_unobs_time" : 0.2, "max_obs_time" : 0.8, 
-                                "vel_max" : 1, "vel_min" : 0.5, "acc" : 100, "theta_max" : -30, "theta_min" : -90,
-                                "min_obstacles" : 1, "max_obstacles" : 4, "damping" : 0, "mirror" : false, "magnetic_coef" : 1000 }
+        // this.game_params = {"exploding_perc" : 0.33, "max_unobs_time" : 1, "max_obs_time" : 1, 
+        //                         "vel_max" : 1, "vel_min" : 0.5, "acc" : 100, "theta_max" : -30, "theta_min" : -90,
+        //                         "min_obstacles" : 1, "max_obstacles" : 4, "damping" : 0, "mirror" : false, "magnetic_coef" : 1000 }
         // null; // json.load(open(resource_path('JsonFiles/Player_3/GameParams.json'),'r'));
+        this.game_params = {"exploding_perc" : 0.33, "max_unobs_time" : 0, "max_obs_time" : 1, 
+                                "vel_max" : 1, "vel_min" : 0.5, "acc" : 100, "theta_max" : -30, "theta_min" : -90,
+                                "min_obstacles" : 1, "max_obstacles" : 4, "damping" : 0, "mirror" : false, "magnetic_coef" : 0}
         this.initializeGameType();
         this.initializeGameFrame();
         this.setGameID();
@@ -148,11 +151,26 @@ class game{
     }
 
     startrun(){
-        var game_group = 2;
+        // 0: Base, default; 1: Fast movement; 2: Control with MFPF; 3: Curriculum with MFPF; 4: Single Blue; 5: Grouped; 6: Waves
+        var game_group = 6;
         this.current_game_type = "Control";
 
-        if (game_group == 3){     // 3 is curriculum; 2 is control
-            this.current_game_type = "Curriculum";
+        if (game_group == 0){
+            this.current_game_type = "Base";        // 0
+        }else if (game_group == 1){
+            this.current_game_type = "Fast";        // 1
+        }else if (game_group == 2){
+            this.current_game_type = "Control";     // 2
+        }else  if (game_group == 3){     
+            this.current_game_type = "Curriculum";  // 3
+        }else if (game_group == 4){
+            this.current_game_type = "Single";      // 4
+        }else if (game_group == 5){
+            this.current_game_type = "Grouped";     // 5
+        }else if (game_group == 6){
+            this.current_game_type = "Waves";       // 6
+        }else{
+            console.log("This shouldn't be happening.")
         }
 
         // this.current_game_type = 'Control'
@@ -315,79 +333,6 @@ class game{
         ctx.closePath();
     }
 
-    // Sending log files of app.py for logging on server
-    // sendData(){
-    //     let xhr = new XMLHttpRequest();
-    //     let url = "get_data";
-    //     xhr.open("POST", url, true);
-    //     xhr.setRequestHeader("Content-Type", "application/json");
-    //     xhr.onreadystatechange = function () {
-    //         if (xhr.readyState === 4 && xhr.status === 200) {
-    //             let json = JSON.parse(xhr.responseText);
-    //             // console.log(json);
-    //         }
-    //     };
-    //     let data = JSON.stringify({'logname':this.gamelog.logname, 'logdata': this.gamelog.datalog});
-    //     // console.log(data);
-    //     xhr.send(data);
-    // }
-
-    // // Getting game parameters for each game; This runs once per subject and the json file contains parameters for all 40 sessions
-    // getGameParam(){
-    //     let xhr = new XMLHttpRequest();
-    //     let url = "send_gameparam";
-    //     xhr.open("POST", url, false);
-    //     xhr.setRequestHeader("Content-Type", "application/json");
-
-    //     var gameparam_json = null;
-    //     xhr.onreadystatechange = function () {
-    //         if (xhr.readyState === 4 && xhr.status === 200) {
-    //             gameparam_json = JSON.parse(xhr.responseText);
-    //             // console.log(gameparam_json);
-    //             // this.setGameParams(gameparam_json);
-    //             // this.game_params = 6;
-    //         }
-    //     };
-    //     // console.log(this.player.id)
-    //     let data = JSON.stringify({"attempt":this.player.attempt,"player_no":this.player.id});
-    //     // console.log(data);  
-    //     xhr.send(data);
-    //     // console.log(json);
-
-    //     this.game_params = gameparam_json;
-
-    // }
-
-    // // Getting seeds for the obstacles; This runs once every attempt. Each json file contains over 
-    // // 100 seeds from which the game will pull information regarding the next obstacle that appears on screen.
-    // getGameSeeds(){
-    //     let xhr = new XMLHttpRequest();
-    //     let url = "send_gameseeds";
-    //     console.log(url)
-    //     xhr.open("POST", url, false);
-    //     xhr.setRequestHeader("Content-Type", "application/json");
-
-    //     var gameseeds_json = null;
-    //     xhr.onreadystatechange = function () {
-    //         if (xhr.readyState === 4 && xhr.status === 200) {
-    //             gameseeds_json = JSON.parse(xhr.responseText);
-    //             // console.log(gameseeds_json);
-    //         }
-    //     };
-    //     // console.log(this.player.id)
-    //     let data = JSON.stringify({"attempt":(this.player.attempt),"player_no":this.player.id});
-    //     xhr.send(data);
-
-    //     this.game_obstacle_seeds = gameseeds_json;
-    // }
-
-    // // setting the game parameters to those obtained from JSON
-    // setGameParams(gameparam_json)
-    // {
-    //     console.log('setting params')
-    //     this.game_params = gameparam_json;
-    // }
-
     // Run the next timestep of the game
     stepGame(){
         this.curr_time = getTimeS();
@@ -459,11 +404,21 @@ class game{
         }
         this.curr_obstacle = new_obstacle; // Effectively removed collided || out of frame markers
 
+        if (this.game_type == "Waves"){
+            if (this.curr_obstacle.length != 0)
+            {    
+                resetobstacle_count = false;
+                this.obstacle_count = 0;
+                this.check_targets = true;
+            }
+        }
+
         if (resetobstacle_count){
             // Resetting obstacle count. 
             // If this.check_targets is still false, the new count will necessarily be 1 more than the last length
             // Otherwise, the new count will be new_marker_no - from seeds
             this.newobstacle_count(new_marker_no, this.curr_obstacle);
+            
         }
 
         // console.log('Here before while');
@@ -475,11 +430,29 @@ class game{
             // Creating a new obstacle
             var new_obstacle = new obstacles(gameshape, ctime, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id);
             // new_obstacle.setObstacleParams(this.game_obstacle_seeds[this.cur_obstacle_id-1]);   // Setting obstacle values to seeds || This can be commented if not using seeds, game will be random
+            
+            if (((this.game_type == "Grouped") || (this.game_type == "Waves"))){
+                // new_obstacle.loc[0] = clamp(new_obstacle.loc[0], gameshape[0]/4, 3*gameshape[0]/4);
+                if (this.curr_obstacle.length>=1){
+                    new_obstacle.loc[0] = this.curr_obstacle[this.curr_obstacle.length-1].loc[0] + Math.random() * (0) - 0;
+                    // new_obstacle.loc[0] = clamp(new_obstacle.loc[0], gameshape[0]/4, 3*gameshape[0]/4);
+                    if (new_obstacle.loc[0] >= gameshape[0]/2)
+                        new_obstacle.velocity[0] = Math.abs(new_obstacle.velocity[0])*-1;
+                    else
+                        new_obstacle.velocity[0] = Math.abs(new_obstacle.velocity[0]);
+                    // new_obstacle.velocity[0] = Math.abs(new_obstacle.velocity[0])*Math.sign(this.curr_obstacle[this.curr_obstacle.length-1].original_velocity);
+                }
+            }
+            if (this.curr_obstacle.length>=1)
+                console.log(this.curr_obstacle[this.curr_obstacle.length-1].loc[0], new_obstacle.loc[0]);
             this.curr_obstacle.push(new_obstacle);
+
+
 
             if (this.curr_obstacle[this.curr_obstacle.length-1].obstacle_type == 'Regular'){
                 this.check_targets = true;   // Checking if the newly added marker is regular - note that if this was previously false a new marker will necessarily be created
             }
+            
         }
         if (!this.check_targets){
         // If after all this null of the new markers is 'Regular', the most recently created marker will become 'Regular' forcibly
@@ -558,11 +531,18 @@ class game{
         this.player.newGameInit(this.current_time);
         
         console.log('Attempt' + this.player.attempt);
+        console.log(this.game_type)
 
-        if (this.game_type == "Curriculum"){
-            console.log(this.game_type)
-            // this.getGameParam();
-
+        if (this.game_type == "Fast"){
+            this.game_params["vel_min"] = 0.75;
+        }else if(this.game_type == "Control"){
+            this.game_params = {"exploding_perc" : 0.33, "max_unobs_time" : 1, "max_obs_time" : 1, 
+                                "vel_max" : 1, "vel_min" : 0.5, "acc" : 100, "theta_max" : -30, "theta_min" : -90,
+                                "min_obstacles" : 1, "max_obstacles" : 4, "damping" : 0, "mirror" : false, "magnetic_coef" : 1000 }
+        }else if (this.game_type == "Curriculum"){
+            this.getGameParam();
+        }else if(this.game_type == "Single"){
+            this.game_params["exploding_perc"] = 1;
         }
         // this.getGameSeeds();
         this.initializeGameType();
@@ -577,6 +557,10 @@ class game{
             this.cur_obstacle_id += 1;
             var new_obstacle = new obstacles(gameshape, this.current_time, this.exploding_perc, this.velocity_max, this.velocity_min, this.acceleration[1], this.theta_max, this.theta_min, this.max_obs_time, this.max_unobs_time, this.cur_obstacle_id, this.min_obstacles, this.max_obstacles);
             // new_obstacle.setObstacleParams(this.game_obstacle_seeds[this.cur_obstacle_id-1]);   // Set obstacle params to those from seed JSON
+
+            if (this.game_type == "Grouped"){
+                console.log(new_obstacle.loc, this.curr_obstacle[-1].loc)
+            }
 
             this.curr_obstacle.push(new_obstacle);
         }
@@ -593,93 +577,8 @@ class game{
         ctx.closePath();
     }
 
-    // Update the game logger.
-    // updateGamelog(){
-    //     this.gamelog.startPlayerLine(this.current_time, this.player, (this.obstacle_count + 1), this.game_type, this.tracking_type, this.intervention);
-    //     this.gamelog.addObstacleLine(this.curr_obstacle);
-    //     this.gamelog.writeLogLine();
-    //     this.gamelog.clearLogLine();
-    // }
-
-    // calibrateGame():
-    //     call_time = getTimeS()
-
-    //     console.log('Calibration Start')
-    //     while (getTimeS() - call_time) < this.wait_time:
-    //         this.saveframe = false
-    //         this.displayDefault()
-    //         text_center = ((this.frame_size_tuple[0]/2) + this.frame_offset,(this.frame_size_tuple[1]/2))
-    //         this.messageDisplay(f"{this.wait_time - int(getTimeS() - call_time)}", text_center, this.textcolor["black"])
-    //         pygame.display.update()
-
-    //     call_time = getTimeS()
-    //     while (getTimeS() - call_time) < this.wait_time:
-    //         // this.saveframe = true     //  NEED TO CHANGE THIS BACK TO CAPTURE IMAGES
-    //         this.frame_id += 1
-    //         this.displayDefault()
-    //         text_center = ((this.frame_size_tuple[0]/2) + this.frame_offset,(this.frame_size_tuple[1]/2))
-    //         this.messageDisplay(f"{this.wait_time - int(getTimeS() - call_time)}", text_center, this.textcolor["green"])
-    //         pygame.display.update()
-
-    //     console.log('Calibration End')
-
-    //     this.saveframe = false
-
-    // testGame():
-    //     call_time = getTimeS()
-    //     this.gamelog.createTestLogger()
-    //     console.log('Test Start')
-    //     while (getTimeS() - call_time) < this.test_duration:
-    //         ret, frame = this.video_capture.read()
-    //         frame = cv2.flip(frame, 1)
-    //         this.curr_time = getTimeS()
-
-    //         frame, center, blob_area = this.blobDetect(frame)
-    //         if blob_area >= this.blob_area:
-    //             new_loc = np.array(center) 
-    //             if this.mirror:
-    //                 new_loc = this.flipMarkerPosition(new_loc, center)
-    //         else:
-    //             new_loc = np.array(this.player.loc)
-
-    //         new_loc = this.rotateMarkerPosition(new_loc)
-    //         this.player.updatePosition(new_loc, this.curr_time)
-    //         this.game_display.fill([255,255,255])
-    //         pygame.draw.rect(this.game_display, (0,0,0), (0,0,this.frame_offset, this.frame_size_tuple[1]))
-    //         pygame.draw.rect(this.game_display, (0,0,0), (this.frame_offset + this.frame_size_tuple[0],0,this.frame_offset, this.frame_size_tuple[1]))
-
-    //         playerloc = (int(this.player.loc[0]/this.width_ratio) + this.frame_offset, int(this.player.loc[1]/this.height_ratio))
-    //         pygame.draw.circle(this.game_display, this.player.marker_color, playerloc, int(this.scaling_factor*this.player.radius))
-    //         this.messageDisplay(f"{int(this.test_duration - (getTimeS() - call_time))}s", \
-    //                                                     (this.frame_size_tuple[0] + int(this.frame_offset*3/2), this.frame_size_tuple[1]/2), this.textcolor["gray"])
-    //         text_rect = this.getTextRect(f"{int(this.test_duration - (getTimeS() - call_time))}") // TO CHANGE
-    //         this.messageDisplay('Time:', (this.frame_size_tuple[0] + int(this.frame_offset*3/2), this.frame_size_tuple[1]/2 - text_rect[3]), this.textcolor["gray"], "small")
-
-    //         this.gamelog.addTestLine((getTimeS() - call_time), this.player.loc)
-
-    //         pygame.display.update()
-
-    //     this.test_FR = this.frame_id/this.test_duration
-    //     console.log(f"Test Frame Rate is {this.test_FR}")
-
-
-    // flipMarkerPosition(new_loc, center):
-    //     new_loc[0] = this.original_frame_tuple[0] - center[0]
-    //     new_loc[1] = center[1]
-    //     return new_loc
-
-
     resetRotationAngle(rot_angle = 0){
         this.rotation_angle = rot_angle; //degrees
     }
-
-    // rotateMarkerPosition(new_loc):
-    //     // console.log(shape)
-    //     shape = this.original_frame_tuple
-    //     new_loc = new_loc - np.array((shape[0], shape[1]))/2
-    //     c, s = np.cos(this.rotation_angle*np.pi/180), np.sin(this.rotation_angle*np.pi/180)
-    //     R = np.array(((c, -s), (s, c)))
-    //     new_loc = R.dot(new_loc) + (np.array((shape[0], shape[1])))/2
-    //     return new_loc
 
 }

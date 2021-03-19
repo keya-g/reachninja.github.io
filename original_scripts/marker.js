@@ -1,9 +1,9 @@
 class marker{
     constructor(markertype = 'Unlabeled'){
-        this.min_radius = 5;
-        this.max_radius = 10;
+        this.min_radius = 7; //5;
+        this.max_radius = 7; //10;
         this.perc_obs = 0;
-        this.max_unobs_time = 0.15;
+        this.max_unobs_time = 0;
         this.max_obs_time = 1;
         this.unobs_start = -1;
         this.marker_color = "green"; //(0,255,0);
