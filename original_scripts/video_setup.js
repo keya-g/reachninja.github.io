@@ -5,13 +5,13 @@ var video = document.getElementById("videoInput"); // video is the id of video t
 // var gameCanvas = document.getElementById("gameCanvas");
 var lcanvas = document.getElementById("leftCanvas");
 var rcanvas = document.getElementById("rightCanvas");
-var sbutton = document.getElementById("startbutton");
+
 var elem = document.documentElement;
 var instr_box = document.getElementById("instructions");
 document.addEventListener("mousemove", mouseMoveHandler, false);
 document.addEventListener("mousedown", mouseDownHandler, false);
 elem.addEventListener('keypress', keypressed);
-sbutton.addEventListener("click", startButtonHandler);
+
 
 // var gameshape = [gameCanvas.height, gameCanvas.width]
 // var game_object = new game();
@@ -263,16 +263,68 @@ function resetDisplaySize(){
         val = (display_height/2 - sbutton.clientHeight/2);
         top = val + "px";
     }
-}
 
-function startButtonHandler(){
-    // openFullscreen();
-    if (game_object != null){
-        sbutton.style.display = "none";
-        game_object.game_mode = 'StartPlay';
-        game_object.startrun();
-        
+    if (versions){
+        with(sbutton.style) {
+            let val = ((window_width - display_width)/4 - sbutton.clientWidth/2);
+            left = val + "px" ;
+            // console.log(sbutton.clientHeight, left);
+            val = (display_height/2 - 5*sbutton.clientHeight);
+            top = val + "px";
+        }
+        with(fbutton.style) {
+            let val = ((window_width - display_width)/4 - fbutton.clientWidth/2);
+            left = val + "px" ;
+            // console.log(sbutton.clientHeight, left);
+            val = (display_height/2 - 3*fbutton.clientHeight);
+            top = val + "px";
+        }
+        with(conbutton.style) {
+            let val = ((window_width - display_width)/4 - conbutton.clientWidth/2);
+            left = val + "px" ;
+            // console.log(sbutton.clientHeight, left);
+            val = (display_height/2 - 1*conbutton.clientHeight);
+            top = val + "px";
+        }
+        with(curbutton.style) {
+            let val = ((window_width - display_width)/4 - curbutton.clientWidth/2);
+            left = val + "px" ;
+            // console.log(sbutton.clientHeight, left);
+            val = (display_height/2 + 1*curbutton.clientHeight);
+            top = val + "px";
+        }
+        with(sgbutton.style) {
+            let val = ((window_width - display_width)/4 - sgbutton.clientWidth/2);
+            left = val + "px" ;
+            // console.log(sbutton.clientHeight, left);
+            val = (display_height/2 + 3*sgbutton.clientHeight);
+            top = val + "px";
+        }
+        with(grbutton.style) {
+            let val = ((window_width - display_width)/4 - grbutton.clientWidth/2);
+            left = val + "px" ;
+            // console.log(sbutton.clientHeight, left);
+            val = (display_height/2 + 5*grbutton.clientHeight);
+            top = val + "px";
+        }
+        with(wvbutton.style) {
+            let val = ((window_width - display_width)/4 - wvbutton.clientWidth/2);
+            left = val + "px" ;
+            // console.log(sbutton.clientHeight, left);
+            val = (display_height/2 + 7*wvbutton.clientHeight);
+            top = val + "px";
+        }
+
+    }
+    with(rbutton.style) {
+        let val = ((window_width - display_width)/4 - rbutton.clientWidth/2);
+        left = val + "px" ;
+        // console.log(sbutton.clientHeight, left);
+        val = (display_height/2 + 9*rbutton.clientHeight);
+        top = val + "px";
     }
 }
+
+
 
 

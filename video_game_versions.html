@@ -33,7 +33,13 @@
 </audio>   
 
 <div class = box>
-<input id="startbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Start Game"/>
+<input id="startbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Base Game"/>
+<input id="fastbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Fast Game"/>
+<input id="controlbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" disabled value="Control Game"/>
+<input id="curriculumbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" disabled value="Curriculum Game"/>
+<input id="singlebutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Single Game"/>
+<input id="groupedbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Grouped Game"/>
+<input id="wavesbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Waves Game"/>
 <input id="returnbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" hidden value="Return Home"/>
 
 <canvas id="leftCanvas" width="200" height="480"
@@ -61,8 +67,14 @@ Your browser does not support the canvas element.
 
 <button id="audioallowed" onClick="allowAudio()">Allow audio?</button>
 <script type="text/javascript">
-  
-  var versions = false;
+  var versions = true;
+  var fbutton = document.getElementById("fastbutton");
+  var conbutton = document.getElementById("controlbutton");
+  var curbutton = document.getElementById("curriculumbutton");
+  var sgbutton = document.getElementById("singlebutton");
+  var grbutton = document.getElementById("groupedbutton");
+  var wvbutton = document.getElementById("wavesbutton");
+
   function allowAudio(){
     let sound = document.getElementById("win1");
     sound.play();

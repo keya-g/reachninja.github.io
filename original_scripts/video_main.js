@@ -1,4 +1,169 @@
+var sbutton = document.getElementById("startbutton");
+sbutton.addEventListener("click", startButtonHandler);
+var rbutton = document.getElementById("returnbutton");
+rbutton.addEventListener("click", returnButtonHandler);
 
+if (versions){
+    fbutton.addEventListener("click", fastButtonHandler);
+    conbutton.addEventListener("click",conButtonHandler);
+    curbutton.addEventListener("click",curButtonHandler);
+    sgbutton.addEventListener("click",sgButtonHandler);
+    grbutton.addEventListener("click",grButtonHandler);
+    wvbutton.addEventListener("click",wvButtonHandler);
+}
+
+var reset_check = true;
+
+function returnButtonHandler(){
+    if (game_object != null){
+        game_object.crashed = true;
+        reset_check = true
+        if(confirm("Returning!")){
+            game_object.game_mode = null;
+            sbutton.style.display = "block";
+            if (versions){
+                fbutton.style.display = "block";
+                conbutton.style.display = "block";
+                curbutton.style.display = "block";
+                sgbutton.style.display = "block";
+                grbutton.style.display = "block";
+                wvbutton.style.display = "block";
+            }
+            rbutton.style.display = "none";
+            lcontext = lcanvas.getContext('2d');
+            rcontext = rcanvas.getContext('2d');
+            lcontext.clearRect(0,0, lcanvas.width, lcanvas.height);
+            rcontext.clearRect(0,0, rcanvas.width, rcanvas.height);
+
+        }else{
+            game_object.crashed = false;
+        }
+    }
+}
+
+
+var game_group = 0; // Default initialization
+function startButtonHandler(){
+      reset_check = true;
+      if (game_object != null){
+            game_group = 0;
+            sbutton.style.display = "none";
+            game_object.game_mode = 'StartPlay';
+            rbutton.style.display = "block";
+            game_object.startrun();
+            if (versions){
+                fbutton.style.display = "none";
+                conbutton.style.display = "none";
+                curbutton.style.display = "none";
+                sgbutton.style.display = "none";
+                grbutton.style.display = "none";
+                wvbutton.style.display = "none";
+                
+            }
+      }
+  }
+  function fastButtonHandler(){
+      reset_check = true;
+      if (game_object != null){
+            sbutton.style.display = "none";
+            fbutton.style.display = "none";
+            conbutton.style.display = "none";
+            curbutton.style.display = "none";
+            sgbutton.style.display = "none";
+            grbutton.style.display = "none";
+            wvbutton.style.display = "none";
+            rbutton.style.display = "block";
+            game_group = 1;
+            game_object.game_mode = 'StartPlay';
+            game_object.startrun();
+          
+      }
+  }
+  function conButtonHandler(){
+      reset_check = true;
+      if (game_object != null){
+            sbutton.style.display = "none";
+            fbutton.style.display = "none";
+            conbutton.style.display = "none";
+            curbutton.style.display = "none";
+            sgbutton.style.display = "none";
+            grbutton.style.display = "none";
+            wvbutton.style.display = "none";
+            rbutton.style.display = "block";
+            game_group = 2;
+            game_object.game_mode = 'StartPlay';
+            game_object.startrun();
+          
+      }
+  }
+  function curButtonHandler(){
+      reset_check = true;
+      if (game_object != null){
+            sbutton.style.display = "none";
+            fbutton.style.display = "none";
+            conbutton.style.display = "none";
+            curbutton.style.display = "none";
+            sgbutton.style.display = "none";
+            grbutton.style.display = "none";
+            wvbutton.style.display = "none";
+            rbutton.style.display = "block";
+            game_group = 3;
+            game_object.game_mode = 'StartPlay';
+            game_object.startrun();
+          
+      }
+  }
+  function sgButtonHandler(){
+      reset_check = true;
+      if (game_object != null){
+            sbutton.style.display = "none";
+            fbutton.style.display = "none";
+            conbutton.style.display = "none";
+            curbutton.style.display = "none";
+            sgbutton.style.display = "none";
+            grbutton.style.display = "none";
+            wvbutton.style.display = "none";
+            rbutton.style.display = "block";
+            game_group = 4;
+            game_object.game_mode = 'StartPlay';
+            game_object.startrun();
+          
+      }
+  }
+  function grButtonHandler(){
+      reset_check = true;
+      if (game_object != null){
+            sbutton.style.display = "none";
+            fbutton.style.display = "none";
+            conbutton.style.display = "none";
+            curbutton.style.display = "none";
+            sgbutton.style.display = "none";
+            grbutton.style.display = "none";
+            wvbutton.style.display = "none";
+            rbutton.style.display = "block";
+            game_group = 5;
+            game_object.game_mode = 'StartPlay';
+            game_object.startrun();
+          
+      }
+  }
+  function wvButtonHandler(){
+      reset_check = true;
+      if (game_object != null){
+            sbutton.style.display = "none";
+            fbutton.style.display = "none";
+            conbutton.style.display = "none";
+            curbutton.style.display = "none";
+            sgbutton.style.display = "none";
+            grbutton.style.display = "none";
+            wvbutton.style.display = "none";
+            rbutton.style.display = "block";
+            game_group = 6;
+            game_object.game_mode = 'StartPlay';
+            game_object.startrun();
+          
+      }
+  }
 
 
 function main(){
@@ -25,12 +190,18 @@ function main(){
         }
 
         if (video.width == 0){return;}
-
-        resetDisplaySize()
+        
         if (resetcap){
             cap = new cv.VideoCapture(video);
+            if (reset_check){
+                resetDisplaySize();
+                reset_check = false;
+            }
         }
-        
+        if (reset_check){
+            resetDisplaySize();
+            reset_check = false;
+        }
         var begin = Date.now();
         var delay = 1000/FPS - (Date.now() - begin);
         // console.log(game_object.game_mode);
@@ -39,6 +210,7 @@ function main(){
             setTimeout(rungame, delay);
         }
         else{
+
             setTimeout(processVideo, delay);
         }
     }
@@ -88,6 +260,8 @@ function rungame(){
     // console.log(game_object.player.loc);
     game_object.run();
 }
+
+
 
 // var interval = setInterval(rungame,1);
 

@@ -152,7 +152,7 @@ class game{
 
     startrun(){
         // 0: Base, default; 1: Fast movement; 2: Control with MFPF; 3: Curriculum with MFPF; 4: Single Blue; 5: Grouped; 6: Waves
-        var game_group = 6;
+        // var game_group = 6;
         this.current_game_type = "Control";
 
         if (game_group == 0){
@@ -242,14 +242,10 @@ class game{
             this.crashed = true;
         }
 
-        if (this.crashed == true){
-            if (confirm("Game ended! Restart?")){
-                this.game_mode = 'StartPlay';
-                // this.gamelog.newGameLog = null;
-                this.player.start_time = -1;
-                this.crashed = false;
-            }
-        }
+        // if (this.crashed == true){
+            
+            
+        // }
     }
 
     updateGameFrame(){
