@@ -2,7 +2,7 @@ var sbutton = document.getElementById("startbutton");
 sbutton.addEventListener("click", startButtonHandler);
 var rbutton = document.getElementById("returnbutton");
 rbutton.addEventListener("click", returnButtonHandler);
-
+document.addEventListener('keydown', logKey);
 if (versions){
     fbutton.addEventListener("click", fastButtonHandler);
     conbutton.addEventListener("click",conButtonHandler);
@@ -13,6 +13,15 @@ if (versions){
 }
 
 var reset_check = true;
+
+function logKey(e) {
+    console.log(e.code);
+    if (e.code.includes('Enter'))
+        startButtonHandler();
+    if (e.code.includes('KeyF'))
+        openFullscreen();
+
+}
 
 function returnButtonHandler(){
     if (game_object != null){

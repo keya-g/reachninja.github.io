@@ -225,7 +225,7 @@ class game{
         }
 
         if (this.crashed == true){
-            if (confirm("Game ended! Restart?")){
+            if (confirm("Your score is " + this.player.score + ". Restart?")){
                 this.game_mode = 'StartPlay';
                 // this.gamelog.newGameLog = null;
                 this.player.start_time = -1;

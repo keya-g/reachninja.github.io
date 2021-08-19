@@ -104,6 +104,7 @@ function processVideo() {
     // arraypt = scaleArray(arraypt, window_width/red_width);
     // arraypt[0] = window_width - arraypt[0];
     // console.log(center)
+    cv.flip(dst, dst, 1);
     cv.imshow('gameCanvas', dst);
     cv.imshow('gameCanvas_v', dst);
     src.delete();

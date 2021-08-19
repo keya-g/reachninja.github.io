@@ -36,27 +36,67 @@
 
 <div class = box>
   <div class="btn-group">
+    <button id="instructions">Instructions</button>
     <button id="mouse_game">Mouse Version</button>
     <button id="webcam_game">Webcam Version</button>
+    <button id="webcam_game_feedback">Webcam Version + Visual Feedback</button>
   </div>
 </div>
 
+
 <button id="audioallowed" onClick="allowAudio()">Allow audio?</button>
+<div class = box>
+  <div>
+      <canvas id="instruction_canvas" width="640" height="300"
+      style="z-index:1">
+      Your browser does not support the canvas element.
+      </canvas>
+  </div>
+</div>
 <script type="text/javascript">
   function allowAudio(){
     let sound = document.getElementById("win1");
     sound.play();
   }
-
 </script>
 
 
 <script type="text/javascript">
+  var inst_on = false;
+  document.getElementById("instructions").onclick = function(){
+    console.log('Here')
+    var instrcanvas = document.getElementById("instruction_canvas");
+    instrcanvas = instrcanvas.getContext("2d");
+    if (inst_on){
+      instrcanvas.canvas.hidden = true;
+      inst_on = false;
+    } else{
+      instrcanvas.canvas.hidden = false;
+      instrcanvas.font = "15px Arial";
+      instrcanvas.textAlign = 'center';
+      instrcanvas.fillText("Reach Ninja Demo: Maximize your total score!", 320, 20)
+      instrcanvas.textAlign = 'center';
+      instrcanvas.fillText("Mouse Version: Use your mouse to control the red cursor on the game screen.", 320, 40)
+
+      instrcanvas.textAlign = 'center';
+      instrcanvas.fillText("Webcam Version: Hold up a spherical tracking object with high contrast and click on it.", 320, 60)
+      instrcanvas.fillText("Webcam Version with feedback: Use right video to click on tracking object.", 320, 80)
+      instrcanvas.fillText("Click on start game when tracking is accurate.", 320, 100)
+      
+      inst_on = true;
+    }
+
+  }
+
+
   document.getElementById("mouse_game").onclick = function(){
     location.href = "https://keya-g.github.io/reachninja.github.io/mouse_game";
   }
   document.getElementById("webcam_game").onclick = function(){
     location.href = "https://keya-g.github.io/reachninja.github.io/video_game";
+  }
+  document.getElementById("webcam_game_feedback").onclick = function(){
+    location.href = "https://keya-g.github.io/reachninja.github.io/video_game_visual";
   }
 </script>
 

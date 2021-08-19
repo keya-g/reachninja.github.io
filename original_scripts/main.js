@@ -14,7 +14,7 @@ damping = 0;
 mirror = false;
 var newplayer = new player(gameshape, damping, mirror);
 document.addEventListener("mousemove", mouseMoveHandler, false);
-
+var game_group = 0; // Default initialization
 var game_object = new game();
 
 function draw() {

@@ -238,6 +238,9 @@ class game{
             this.player.setStartTime();
             // console.log(this.gamelog.datalog);
             // this.sendData();
+
+            alert("Your score is " + this.player.score)
+
             this.sendlog = true;
             this.crashed = true;
         }
@@ -291,7 +294,7 @@ class game{
             var disp_frames = 10;   
         }
         else{
-            var disp_frames = 100;
+            var disp_frames = 30;
         }
 
         
@@ -302,7 +305,7 @@ class game{
             if (score_change < 0){
                 dispmsg = Math.ceil(score_change);
             }
-            this.writeOnCanvas(gameCanvas,dispmsg, this.player.loc, "black", "20px");
+            this.writeOnCanvas(gameCanvas,dispmsg, this.player.loc, "black", "25px");
             this.display_score += 1;
             if (this.display_score >= disp_frames){
                 this.old_score = this.player.score;

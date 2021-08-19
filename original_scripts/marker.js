@@ -1,7 +1,7 @@
 class marker{
     constructor(markertype = 'Unlabeled'){
         this.min_radius = 7; //5;
-        this.max_radius = 7; //10;
+        this.max_radius = 8; //10;
         this.perc_obs = 0;
         this.max_unobs_time = 0;
         this.max_obs_time = 1;
