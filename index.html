@@ -47,7 +47,7 @@
 <button id="audioallowed" onClick="allowAudio()">Allow audio?</button>
 <div class = box>
   <div>
-      <canvas id="instruction_canvas" width="640" height="300"
+      <canvas id="instruction_canvas" width="800" height="300"
       style="z-index:1">
       Your browser does not support the canvas element.
       </canvas>
@@ -62,11 +62,14 @@
 
 
 <script type="text/javascript">
+
   var inst_on = false;
   document.getElementById("instructions").onclick = function(){
     console.log('Here')
     var instrcanvas = document.getElementById("instruction_canvas");
+    var instwidth = instrcanvas.width;
     instrcanvas = instrcanvas.getContext("2d");
+
     if (inst_on){
       instrcanvas.canvas.hidden = true;
       inst_on = false;
@@ -74,14 +77,15 @@
       instrcanvas.canvas.hidden = false;
       instrcanvas.font = "15px Arial";
       instrcanvas.textAlign = 'center';
-      instrcanvas.fillText("Reach Ninja Demo: Maximize your total score!", 320, 20)
+      instrcanvas.fillText("Reach Ninja Demo: Maximize your total score!", instwidth/2, 20)
       instrcanvas.textAlign = 'center';
-      instrcanvas.fillText("Mouse Version: Use your mouse to control the red cursor on the game screen.", 320, 40)
+      instrcanvas.fillText("Mouse Version: Use your mouse to control the red cursor on the game screen.", instwidth/2, 40)
 
       instrcanvas.textAlign = 'center';
-      instrcanvas.fillText("Webcam Version: Hold up a spherical tracking object with high contrast and click on it.", 320, 60)
-      instrcanvas.fillText("Webcam Version with feedback: Use right video to click on tracking object.", 320, 80)
-      instrcanvas.fillText("Click on start game when tracking is accurate.", 320, 100)
+      instrcanvas.fillText("Webcam Version: Hold up a high contrast spherical tracking object and click on it. It will be tracked in blue.", instwidth/2, 60)
+      instrcanvas.fillText("Webcam Version with feedback: Use the right hand video to click on the high contrast spherical tracking object.", instwidth/2, 80)
+      instrcanvas.fillText("For both webcam versions: Once tracking is accurate, click on start game.", instwidth/2, 100)
+      instrcanvas.fillText("Note that no data is recorded at any time including gameplay or webcam video.", instwidth/2, 120)
       
       inst_on = true;
     }
