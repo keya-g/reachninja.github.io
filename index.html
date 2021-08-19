@@ -39,7 +39,7 @@
     <button id="instructions">Instructions</button>
     <button id="mouse_game">Mouse Version</button>
     <button id="webcam_game">Webcam Version</button>
-    <button id="webcam_game_feedback">Webcam Version + Visual Feedback</button>
+    <button id="webcam_game_feedback">See how it works!</button>
   </div>
 </div>
 
@@ -47,7 +47,7 @@
 <button id="audioallowed" onClick="allowAudio()">Allow audio?</button>
 <div class = box>
   <div>
-      <canvas id="instruction_canvas" width="800" height="300"
+      <canvas id="instruction_canvas" width="1000" height="300"
       style="z-index:1">
       Your browser does not support the canvas element.
       </canvas>
@@ -82,9 +82,8 @@
       instrcanvas.fillText("Mouse Version: Use your mouse to control the red cursor on the game screen.", instwidth/2, 40)
 
       instrcanvas.textAlign = 'center';
-      instrcanvas.fillText("Webcam Version: Hold up a high contrast spherical tracking object and click on it. It will be tracked in blue.", instwidth/2, 60)
-      instrcanvas.fillText("Webcam Version with feedback: Use the right hand video to click on the high contrast spherical tracking object.", instwidth/2, 80)
-      instrcanvas.fillText("For both webcam versions: Once tracking is accurate, click on start game.", instwidth/2, 100)
+      instrcanvas.fillText("Webcam Version: Hold up a high contrast spherical tracking object and click on it. It will be tracked in blue. Click on start game when ready.", instwidth/2, 60)
+      instrcanvas.fillText("Seeing how it works: Use the right hand video to click on the high contrast spherical tracking object. Click on start game when ready.", instwidth/2, 80)
       instrcanvas.fillText("Note that no data is recorded at any time including gameplay or webcam video.", instwidth/2, 120)
       
       inst_on = true;
