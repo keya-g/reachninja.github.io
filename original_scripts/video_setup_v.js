@@ -62,7 +62,14 @@ var game_object = null;
 
 var red_width = 600;    // This is the reduction in image size done to speed up blob tracking; higher value => more pixels to search, higher accuracy but lower speed; and vice versa
 
+var fontBase = 100,                   // selected default width for canvas
+    fontSize = 20;                     // default size for font
 
+function getFont(canvas) {
+    var ratio = fontSize / fontBase;   // calc ratio
+    var size = canvas.width * ratio;   // get font size based on current width
+    return (size|0) + 'px Arial'; // set font
+}
 
 cv['onRuntimeInitialized']=()=>{
     console.log(cv.getBuildInformation());
@@ -262,6 +269,10 @@ function resetDisplaySize(){
     style_line = "z-index:1; width: " + (window_width - display_width - 32)/2   + "px; height:" + display_height + "px;";
     lcanvas.setAttribute("style", style_line);
     rcanvas.setAttribute("style", style_line);
+    lctx = lcanvas.getContext("2d");
+    lctx.font = getFont(lcanvas);
+    rctx = rcanvas.getContext("2d");
+    rctx.font = getFont(rcanvas);
     // lcanvas_v.setAttribute("style", style_line);
     // rcanvas_v.setAttribute("style", style_line);
     gameshape = [actual_width, actual_height];

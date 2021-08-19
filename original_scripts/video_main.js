@@ -177,6 +177,7 @@ function startButtonHandler(){
 
 function main(){
     // openFullscreen()
+    resetDisplaySize();
     let resetcap = false;
     if (cv_built == true && streaming){
 
@@ -195,7 +196,6 @@ function main(){
         if (actual_width == 0){
             actual_width = cap.video.videoWidth; 
             video.width = cap.video.videoWidth; 
-            
         }
 
         if (video.width == 0){return;}

@@ -34,7 +34,7 @@
 
 <div class = box>
 <input id="startbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" value="Start Game"/>
-<input id="returnbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" hidden value="Return Home"/>
+<input id="returnbutton" type="button" style="z-index:2; position: absolute; top:-5px; left:-5px; font-size : 20px;" hidden value="Return to video"/>
 
 <canvas id="leftCanvas" width="200" height="480"
 style="z-index:1">
@@ -59,13 +59,17 @@ Your browser does not support the canvas element.
 </div>
 
 
-<button id="audioallowed" onClick="allowAudio()">Allow audio?</button>
+<div><button id="audioallowed" onClick="allowAudio()" font-size=30px>Allow audio?</button></div>
+<div><button id="returnhome" onClick="returnHome()" font-size=30px>Return home</button></div>
 <script type="text/javascript">
   
   var versions = false;
   function allowAudio(){
     let sound = document.getElementById("win1");
     sound.play();
+  }
+  function returnHome(){
+    location.href = "https://keya-g.github.io/reachninja.github.io";
   }
 
 </script>

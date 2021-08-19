@@ -55,12 +55,17 @@ style="z-index:1">
 Your browser does not support the canvas element.
 </canvas>
 </div>
-<button id="audioallowed" onClick="allowAudio()" font-size=16px>Allow audio?</button>
+
+<div><button id="audioallowed" onClick="allowAudio()" font-size=30px>Allow audio?</button></div>
+<div><button id="returnhome" onClick="returnHome()" font-size=30px>Return home</button></div>
 <script type="text/javascript">
   document.getElementById("gameCanvas").style.cursor = "none";
   function allowAudio(){
     let sound = document.getElementById("win1");
     sound.play();
+  }
+  function returnHome(){
+    location.href = "https://keya-g.github.io/reachninja.github.io";
   }
 
 </script>

@@ -17,6 +17,15 @@ document.addEventListener("mousemove", mouseMoveHandler, false);
 var game_group = 0; // Default initialization
 var game_object = new game();
 
+var fontBase = 100,                   // selected default width for canvas
+    fontSize = 20;                     // default size for font
+
+function getFont(canvas) {
+    var ratio = fontSize / fontBase;   // calc ratio
+    var size = canvas.width * ratio;   // get font size based on current width
+    return (size|0) + 'px Arial'; // set font
+}
+
 function draw() {
     drawBG()    // Make background black and white - from other script
     drawHand(newplayer)  // Draw the hand marker
@@ -74,6 +83,7 @@ function keyUpHandler(e) {
 
 
 function mouseMoveHandler(e) {
+    console.log(gameCanvas.offsetLeft);
     var relativeX = e.clientX - gameCanvas.offsetLeft;
     var relativeY = e.clientY - gameCanvas.offsetTop;
     newX = newplayer.loc[0];
@@ -106,6 +116,7 @@ var tracking_type = "Mouse";
 game_object.startrun()
 
 function rungame(){
+    resetDisplaySize()
     curr_time = getTimeS();
     // game_object.player.updatePosition(newplayer.loc,curr_time);
     game_object.player.resetMovementParams(newplayer);
@@ -123,10 +134,18 @@ function rungame(){
 function resetDisplaySize(){
     window_width = window.innerWidth;
     window_height = window.innerHeight;
+    var gameratio = gameCanvas.width/gameCanvas.height;
 
+    style_line = "z-index:1; width: " + window_width*0.7 + "px; height:"  + window_height*0.9 + "px; cursor: none;";
+    // gameCanvas.width = window_height*gameratio;
+    gameCanvas.setAttribute("style", style_line);
     style_line = "z-index:1; width: " + (window_width - gameCanvas.width)/2   + "px; height:" + gameCanvas.height + "px;";
     scoreCanvas.setAttribute("style", style_line);
     timeCanvas.setAttribute("style", style_line);
+    scoreCanvasctx = scoreCanvas.getContext("2d");
+    scoreCanvasctx.font = getFont(scoreCanvas);
+    timeCanvasctx = timeCanvas.getContext("2d");
+    timeCanvasctx.font = getFont(timeCanvas);
     // gameshape = [display_width, display_height];
     // style_line = "z-index:2; position:absolute; top:" +   + "; left:"  +  ;
     // sbutton.setAttribute("style",style_line);
@@ -141,7 +160,6 @@ function resetDisplaySize(){
 
 
 
-resetDisplaySize()
 var interval = setInterval(rungame,10);
 
 // rungame()

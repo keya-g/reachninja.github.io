@@ -72,6 +72,15 @@ function deletevar(variable){
     }catch{}
 }
 
+var fontBase = 100,                   // selected default width for canvas
+    fontSize = 20;                     // default size for font
+
+function getFont(canvas) {
+    var ratio = fontSize / fontBase;   // calc ratio
+    var size = canvas.width * ratio;   // get font size based on current width
+    return (size|0) + 'px Arial'; // set font
+}
+
 function processVideo() {
 
     src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
@@ -242,6 +251,7 @@ function keypressed(e){
 }
 
 function resetDisplaySize(){
+    // console.log("Resetting display")
     window_width = window.innerWidth;
     window_height = window.innerHeight;
     display_height = window_height - 50;
@@ -253,6 +263,10 @@ function resetDisplaySize(){
     style_line = "z-index:1; width: " + (window_width - display_width - 32)/2   + "px; height:" + display_height + "px;";
     lcanvas.setAttribute("style", style_line);
     rcanvas.setAttribute("style", style_line);
+    lctx = lcanvas.getContext("2d");
+    lctx.font = getFont(lcanvas);
+    rctx = rcanvas.getContext("2d");
+    rctx.font = getFont(rcanvas);
     gameshape = [actual_width, actual_height];
     // style_line = "z-index:2; position:absolute; top:" +   + "; left:"  +  ;
     // sbutton.setAttribute("style",style_line);

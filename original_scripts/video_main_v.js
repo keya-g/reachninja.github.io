@@ -3,6 +3,7 @@
 
 function main(){
     // openFullscreen()
+    
     let resetcap = false;
     if (cv_built == true && streaming){
 

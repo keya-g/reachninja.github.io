@@ -316,9 +316,13 @@ class game{
     }
 
     // Write score or time on canvas
-    writeOnCanvas(curr_canvas, display_text, text_loc, textcolor, textsize = "20px"){
+    writeOnCanvas(curr_canvas, display_text, text_loc, textcolor, textsize = ""){
         let ctx = curr_canvas.getContext("2d");
-        ctx.font = textsize +" Arial";
+
+        if (textsize == "")
+            textsize = curr_canvas.getContext("2d").font;
+        else
+            ctx.font = textsize +" Arial";
         ctx.fillStyle = textcolor;
         ctx.fillText(display_text, text_loc[0], text_loc[1]);
     }
